@@ -102,7 +102,7 @@ namespace DxfTest
             var dxfPolylineVertices = dxfPolyline.Vertices;
             var points = dxfPolylineVertices
                 .Select(t => new PointF((int)t.Location.X * scaleFactor + offsetX,
-                    height - ((int)t.Location.Y * scaleFactor + offsetY)))
+                    (int)t.Location.Y * scaleFactor + offsetY))
                 .ToArray();
             graphics.DrawLines(Pens.Black, points);
         }
@@ -111,16 +111,16 @@ namespace DxfTest
         {
             graphics.DrawLine(Pens.Black,
                 (float)dxfLine.P1.X * scaleFactor + offsetX,
-                height - ((float)dxfLine.P1.Y * scaleFactor + offsetY),
+                (float)dxfLine.P1.Y * scaleFactor + offsetY,
                 (float)dxfLine.P2.X * scaleFactor + offsetX,
-                height - ((float)dxfLine.P2.Y * scaleFactor + offsetY));
+                (float)dxfLine.P2.Y * scaleFactor + offsetY);
         }
 
         private void RenderEntity(DxfSpline dxfSpline, Graphics graphics, int height)
         {
             var points = dxfSpline.ControlPoints
                 .Select(t => new PointF((int)t.Point.X * scaleFactor + offsetX,
-                    height - ((int)t.Point.Y * scaleFactor + offsetY)))
+                    (int)t.Point.Y * scaleFactor + offsetY))
                 .ToArray();
 
             graphics.DrawLines(Pens.Black, points);
@@ -130,7 +130,7 @@ namespace DxfTest
         {
             graphics.DrawArc(Pens.Black,
                 (float)(dxfArc.Center.X - dxfArc.Radius / 2) * scaleFactor + offsetX,
-                height - ((float)(dxfArc.Center.Y - dxfArc.Radius / 2) * scaleFactor + offsetY),
+                (float)(dxfArc.Center.Y - dxfArc.Radius / 2) * scaleFactor + offsetY,
                 (float)dxfArc.Radius * scaleFactor,
                 (float)dxfArc.Radius * scaleFactor, (float)dxfArc.StartAngle,
                 (float)(dxfArc.EndAngle - dxfArc.StartAngle));
@@ -140,7 +140,7 @@ namespace DxfTest
         {
             graphics.DrawEllipse(Pens.Black,
                 (float)(dxfCircle.Center.X - dxfCircle.Radius / 2) * scaleFactor + offsetX,
-                height - ((float)(dxfCircle.Center.Y - dxfCircle.Radius / 2) * scaleFactor + offsetY),
+                (float)(dxfCircle.Center.Y - dxfCircle.Radius / 2) * scaleFactor + offsetY,
                 (float)dxfCircle.Radius * scaleFactor,
                 (float)dxfCircle.Radius * scaleFactor);
         }
@@ -213,7 +213,7 @@ namespace DxfTest
                 mouseStart = e.Location;
 
                 offsetX += dx;
-                offsetY -= dy;
+                offsetY += dy;
 
                 if (dxfFile != null)
                 {
