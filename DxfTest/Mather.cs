@@ -56,7 +56,7 @@ namespace DxfTest
 
         private float Distance(DxfPoint p1, DxfPoint p2)
         {
-            return (float)Math.Sqrt((p1.X - p2.X) * (p1.Y - p2.Y));
+            return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
         }
 
         private float Distance(DxfVertex p1, DxfVertex p2)
