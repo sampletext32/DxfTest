@@ -18,26 +18,27 @@ namespace DxfTest
         private Bitmap bitmap;
         private Point mouseStart;
         private bool dragging;
-        private int offsetX = 0;
-        private int offsetY = 0;
 
-        private float scaleFactor = 1f;
+        private Renderer Renderer { get; set; }
 
         public Form1()
         {
             InitializeComponent();
             pictureBoxMain.MouseWheel += OnMouseWheel;
+            bitmap = new Bitmap(pictureBoxMain.Width, pictureBoxMain.Height);
+
+            Renderer = new Renderer(1f, 0, 0);
         }
 
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
             int delta = e.Delta / SystemInformation.MouseWheelScrollDelta;
 
-            scaleFactor += 0.1f * delta;
+            Renderer.ScaleFactor += 0.1f * delta;
 
             if (dxfFile != null)
             {
-                Render(dxfFile);
+                Renderer.Render(dxfFile, bitmap, pictureBoxMain.Width, pictureBoxMain.Height);
                 pictureBoxMain.Refresh();
             }
         }
@@ -58,126 +59,6 @@ namespace DxfTest
             return entitiesCount;
         }
 
-        private void RenderEntities(IList<DxfEntity> dxfEntities, Graphics graphics, int height)
-        {
-            foreach (var dxfEntity in dxfEntities)
-            {
-                RenderEntity(dxfEntity, graphics, height);
-            }
-        }
-
-        private void RenderEntity(DxfEntity dxfEntity, Graphics graphics, int height)
-        {
-            if (dxfEntity is DxfPolyline dxfPolyline)
-            {
-                RenderEntity(dxfPolyline, graphics, height);
-            }
-            else if (dxfEntity is DxfLine dxfLine)
-            {
-                RenderEntity(dxfLine, graphics, height);
-            }
-            else if (dxfEntity is DxfSpline dxfSpline)
-            {
-                RenderEntity(dxfSpline, graphics, height);
-            }
-            else if (dxfEntity is DxfCircle dxfCircle)
-            {
-                if (dxfCircle is DxfArc dxfArc)
-                {
-                    RenderEntity(dxfArc, graphics, height);
-                }
-                else
-                {
-                    RenderEntity(dxfCircle, graphics, height);
-                }
-            }
-            else if (dxfEntity is DxfInsert dxfInsert)
-            {
-                RenderEntity(dxfInsert, graphics, height);
-            }
-        }
-
-        private void RenderEntity(DxfPolyline dxfPolyline, Graphics graphics, int height)
-        {
-            var dxfPolylineVertices = dxfPolyline.Vertices;
-            var points = dxfPolylineVertices
-                .Select(t => new PointF((int)t.Location.X * scaleFactor + offsetX,
-                    (int)t.Location.Y * scaleFactor + offsetY))
-                .ToArray();
-            graphics.DrawLines(Pens.Black, points);
-        }
-
-        private void RenderEntity(DxfLine dxfLine, Graphics graphics, int height)
-        {
-            graphics.DrawLine(Pens.Black,
-                (float)dxfLine.P1.X * scaleFactor + offsetX,
-                (float)dxfLine.P1.Y * scaleFactor + offsetY,
-                (float)dxfLine.P2.X * scaleFactor + offsetX,
-                (float)dxfLine.P2.Y * scaleFactor + offsetY);
-        }
-
-        private void RenderEntity(DxfSpline dxfSpline, Graphics graphics, int height)
-        {
-            var points = dxfSpline.ControlPoints
-                .Select(t => new PointF((int)t.Point.X * scaleFactor + offsetX,
-                    (int)t.Point.Y * scaleFactor + offsetY))
-                .ToArray();
-
-            graphics.DrawLines(Pens.Black, points);
-        }
-
-        private void RenderEntity(DxfArc dxfArc, Graphics graphics, int height)
-        {
-            graphics.DrawArc(Pens.Black,
-                (float)(dxfArc.Center.X - dxfArc.Radius / 2) * scaleFactor + offsetX,
-                (float)(dxfArc.Center.Y - dxfArc.Radius / 2) * scaleFactor + offsetY,
-                (float)dxfArc.Radius * scaleFactor,
-                (float)dxfArc.Radius * scaleFactor, (float)dxfArc.StartAngle,
-                (float)(dxfArc.EndAngle - dxfArc.StartAngle));
-        }
-
-        private void RenderEntity(DxfCircle dxfCircle, Graphics graphics, int height)
-        {
-            graphics.DrawEllipse(Pens.Black,
-                (float)(dxfCircle.Center.X - dxfCircle.Radius / 2) * scaleFactor + offsetX,
-                (float)(dxfCircle.Center.Y - dxfCircle.Radius / 2) * scaleFactor + offsetY,
-                (float)dxfCircle.Radius * scaleFactor,
-                (float)dxfCircle.Radius * scaleFactor);
-        }
-
-        private void RenderEntity(DxfInsert dxfInsert, Graphics graphics, int height)
-        {
-            var dxfBlock = dxfFile.Blocks.FirstOrDefault(t => t.Name == dxfInsert.Name);
-
-            var entitiesCount = CollectStats(dxfBlock.Entities);
-            var typesString = string.Join("\n",
-                entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
-            labelStats.Text += $"\n\t{dxfBlock.Name}:\n" + typesString + "\n";
-
-            foreach (var dxfEntity in dxfBlock.Entities)
-            {
-                RenderEntity(dxfEntity, graphics, height);
-            }
-        }
-
-        private void Render(DxfFile dxfFile)
-        {
-            int width = pictureBoxMain.Width;
-            int height = pictureBoxMain.Height;
-            bitmap = new Bitmap(width, height);
-
-            var entitiesCount = CollectStats(dxfFile.Entities);
-            var typesString = string.Join("\n",
-                entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
-            labelStats.Text = "\n\tFILE:\n" + typesString + "\n";
-            using (Graphics graphics = Graphics.FromImage(bitmap))
-            {
-                // DXF Coordinates Y is upside-down
-                // https://3e-club.ru/view_full.php?id=24&name=dxf
-                RenderEntities(dxfFile.Entities, graphics, height);
-            }
-        }
-
         private void buttonOpenDxf_Click(object sender, EventArgs e)
         {
             OpenFileDialog opf = new OpenFileDialog();
@@ -186,7 +67,7 @@ namespace DxfTest
             {
                 dxfFile = DxfFile.Load(opf.FileName);
 
-                Render(dxfFile);
+                Renderer.Render(dxfFile, bitmap, pictureBoxMain.Width, pictureBoxMain.Height);
                 pictureBoxMain.Refresh();
             }
 
@@ -216,12 +97,12 @@ namespace DxfTest
 
                 mouseStart = e.Location;
 
-                offsetX += dx;
-                offsetY += dy;
+                Renderer.OffsetX += dx;
+                Renderer.OffsetY += dy;
 
                 if (dxfFile != null)
                 {
-                    Render(dxfFile);
+                    Renderer.Render(dxfFile, bitmap, pictureBoxMain.Width, pictureBoxMain.Height);
                     pictureBoxMain.Refresh();
                 }
             }
@@ -240,12 +121,12 @@ namespace DxfTest
         {
             if (e.KeyCode == Keys.F)
             {
-                offsetX = 0;
-                offsetY = 0;
+                Renderer.OffsetX = 0;
+                Renderer.OffsetY = 0;
 
                 if (dxfFile != null)
                 {
-                    Render(dxfFile);
+                    Renderer.Render(dxfFile, bitmap, pictureBoxMain.Width, pictureBoxMain.Height);
                     pictureBoxMain.Refresh();
                 }
             }
