@@ -153,6 +153,7 @@ namespace DxfTest
             var typesString = string.Join("\n",
                 entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
             labelStats.Text += $"\n\t{dxfBlock.Name}:\n" + typesString + "\n";
+
             foreach (var dxfEntity in dxfBlock.Entities)
             {
                 RenderEntity(dxfEntity, graphics, height);
@@ -165,7 +166,10 @@ namespace DxfTest
             int height = pictureBoxMain.Height;
             bitmap = new Bitmap(width, height);
 
-            labelStats.Text = "";
+            var entitiesCount = CollectStats(dxfFile.Entities);
+            var typesString = string.Join("\n",
+                entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
+            labelStats.Text = "\n\tFILE:\n" + typesString + "\n";
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 // DXF Coordinates Y is upside-down
