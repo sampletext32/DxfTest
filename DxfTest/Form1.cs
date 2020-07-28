@@ -69,6 +69,8 @@ namespace DxfTest
 
                 Renderer.Render(dxfFile, bitmap, pictureBoxMain.Width, pictureBoxMain.Height);
                 pictureBoxMain.Refresh();
+
+                labelCost.Text = "Cost: " + new Mather().GetFileTotalLength(dxfFile) + " c.u.";
             }
 
             this.Focus();
