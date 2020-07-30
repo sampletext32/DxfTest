@@ -67,7 +67,7 @@ namespace DxfTest
             var dxfPolylineVertices = dxfPolyline.Vertices;
             var points = dxfPolylineVertices
                 .Select(t => new PointF((int)t.Location.X * ScaleFactor + OffsetX,
-                    (int)t.Location.Y * ScaleFactor + OffsetY))
+                    height - (int)t.Location.Y * ScaleFactor + OffsetY))
                 .ToArray();
             graphics.DrawLines(Pens.Black, points);
         }
@@ -76,16 +76,16 @@ namespace DxfTest
         {
             graphics.DrawLine(Pens.Black,
                 (float)dxfLine.P1.X * ScaleFactor + OffsetX,
-                (float)dxfLine.P1.Y * ScaleFactor + OffsetY,
+                height - (float)dxfLine.P1.Y * ScaleFactor + OffsetY,
                 (float)dxfLine.P2.X * ScaleFactor + OffsetX,
-                (float)dxfLine.P2.Y * ScaleFactor + OffsetY);
+                height - (float)dxfLine.P2.Y * ScaleFactor + OffsetY);
         }
 
         public void RenderEntity(DxfSpline dxfSpline, Graphics graphics, int height)
         {
             var points = dxfSpline.ControlPoints
                 .Select(t => new PointF((int)t.Point.X * ScaleFactor + OffsetX,
-                    (int)t.Point.Y * ScaleFactor + OffsetY))
+                    height - (int)t.Point.Y * ScaleFactor + OffsetY))
                 .ToArray();
 
             graphics.DrawLines(Pens.Black, points);
@@ -96,7 +96,7 @@ namespace DxfTest
             float deltaAngle = (float)(dxfArc.EndAngle - dxfArc.StartAngle);
             graphics.DrawArc(Pens.Black,
                 (float)(dxfArc.Center.X - dxfArc.Radius / 2) * ScaleFactor + OffsetX,
-                (float)(dxfArc.Center.Y - dxfArc.Radius / 2) * ScaleFactor + OffsetY,
+                height - (float)(dxfArc.Center.Y - dxfArc.Radius / 2) * ScaleFactor + OffsetY,
                 (float)dxfArc.Radius * ScaleFactor,
                 (float)dxfArc.Radius * ScaleFactor, (float)(dxfArc.StartAngle),
                 deltaAngle);
@@ -106,7 +106,7 @@ namespace DxfTest
         {
             graphics.DrawEllipse(Pens.Black,
                 (float)(dxfCircle.Center.X - dxfCircle.Radius / 2) * ScaleFactor + OffsetX,
-                (float)(dxfCircle.Center.Y - dxfCircle.Radius / 2) * ScaleFactor + OffsetY,
+                height - (float)(dxfCircle.Center.Y - dxfCircle.Radius / 2) * ScaleFactor + OffsetY,
                 (float)dxfCircle.Radius * ScaleFactor,
                 (float)dxfCircle.Radius * ScaleFactor);
         }
