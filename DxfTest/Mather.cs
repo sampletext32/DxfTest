@@ -72,6 +72,8 @@ namespace DxfTest
 
             using (var enumerator = dxfPolylineVertices.GetEnumerator())
             {
+                if (!enumerator.MoveNext()) return sumDistance;
+
                 DxfVertex last = enumerator.Current;
                 while (enumerator.MoveNext())
                 {
@@ -98,6 +100,8 @@ namespace DxfTest
 
             using (var enumerator = dxfSplineControlPoints.GetEnumerator())
             {
+                if (!enumerator.MoveNext()) return sumDistance;
+
                 DxfPoint last = enumerator.Current.Point;
                 while (enumerator.MoveNext())
                 {
