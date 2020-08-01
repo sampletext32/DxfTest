@@ -124,7 +124,7 @@ namespace DxfTest
 
             float sweep = (endAngle - startAngle - 360) % 360;
 
-            return (float)(2 * Math.PI * dxfArc.Radius * sweep / 360f);
+            return (float)(2 * Math.PI * dxfArc.Radius * Math.Abs(sweep) / 360f);
         }
 
         public float GetEntityLength(DxfCircle dxfCircle)
