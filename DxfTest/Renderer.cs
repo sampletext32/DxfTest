@@ -66,8 +66,8 @@ namespace DxfTest
         {
             var dxfPolylineVertices = dxfPolyline.Vertices;
             var points = dxfPolylineVertices
-                .Select(t => new PointF((int)t.Location.X * ScaleFactor + OffsetX,
-                    height - (int)t.Location.Y * ScaleFactor + OffsetY))
+                .Select(t => new PointF((float)t.Location.X * ScaleFactor + OffsetX,
+                    height - (float)t.Location.Y * ScaleFactor + OffsetY))
                 .ToArray();
             graphics.DrawLines(Pens.Black, points);
         }
@@ -84,8 +84,8 @@ namespace DxfTest
         public void RenderEntity(DxfSpline dxfSpline, Graphics graphics, int height)
         {
             var points = dxfSpline.ControlPoints
-                .Select(t => new PointF((int)t.Point.X * ScaleFactor + OffsetX,
-                    height - (int)t.Point.Y * ScaleFactor + OffsetY))
+                .Select(t => new PointF((float)t.Point.X * ScaleFactor + OffsetX,
+                    height - (float)t.Point.Y * ScaleFactor + OffsetY))
                 .ToArray();
 
             graphics.DrawLines(Pens.Black, points);
