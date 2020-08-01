@@ -93,22 +93,24 @@ namespace DxfTest
 
         public void RenderEntity(DxfArc dxfArc, Graphics graphics, int height)
         {
-            float deltaAngle = (float)(dxfArc.EndAngle - dxfArc.StartAngle);
+            float sweep = (float)(dxfArc.EndAngle - dxfArc.StartAngle);
+
             graphics.DrawArc(Pens.Black,
-                (float)(dxfArc.Center.X - dxfArc.Radius / 2) * ScaleFactor + OffsetX,
-                height - (float)(dxfArc.Center.Y - dxfArc.Radius / 2) * ScaleFactor + OffsetY,
-                (float)dxfArc.Radius * ScaleFactor,
-                (float)dxfArc.Radius * ScaleFactor, (float)(dxfArc.StartAngle),
-                deltaAngle);
+                (float)(dxfArc.Center.X - dxfArc.Radius) * ScaleFactor + OffsetX,
+                height - (float)(dxfArc.Center.Y + dxfArc.Radius) * ScaleFactor + OffsetY,
+                (float)dxfArc.Radius * 2f * ScaleFactor,
+                (float)dxfArc.Radius * 2f * ScaleFactor, 
+                (float)(dxfArc.StartAngle),
+                sweep);
         }
 
         public void RenderEntity(DxfCircle dxfCircle, Graphics graphics, int height)
         {
             graphics.DrawEllipse(Pens.Black,
-                (float)(dxfCircle.Center.X - dxfCircle.Radius / 2) * ScaleFactor + OffsetX,
-                height - (float)(dxfCircle.Center.Y - dxfCircle.Radius / 2) * ScaleFactor + OffsetY,
-                (float)dxfCircle.Radius * ScaleFactor,
-                (float)dxfCircle.Radius * ScaleFactor);
+                (float)(dxfCircle.Center.X - dxfCircle.Radius) * ScaleFactor + OffsetX,
+                height - (float)(dxfCircle.Center.Y + dxfCircle.Radius) * ScaleFactor + OffsetY,
+                (float)dxfCircle.Radius * 2f * ScaleFactor,
+                (float)dxfCircle.Radius * 2f * ScaleFactor);
         }
 
         public void RenderEntity(DxfInsert dxfInsert, Graphics graphics, int height)
