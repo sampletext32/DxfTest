@@ -93,14 +93,20 @@ namespace DxfTest
 
         public void RenderEntity(DxfArc dxfArc, Graphics graphics, int height)
         {
-            float sweep = (float)(dxfArc.EndAngle - dxfArc.StartAngle);
+            float startAngle = (float)dxfArc.StartAngle;
+            float endAngle = (float)dxfArc.EndAngle;
+
+            startAngle *= -1;
+            endAngle *= -1;
+
+            float sweep = (endAngle - startAngle - 360) % 360;
 
             graphics.DrawArc(Pens.Black,
                 (float)(dxfArc.Center.X - dxfArc.Radius) * ScaleFactor + OffsetX,
                 height - (float)(dxfArc.Center.Y + dxfArc.Radius) * ScaleFactor + OffsetY,
                 (float)dxfArc.Radius * 2f * ScaleFactor,
-                (float)dxfArc.Radius * 2f * ScaleFactor, 
-                (float)(dxfArc.StartAngle),
+                (float)dxfArc.Radius * 2f * ScaleFactor,
+                startAngle,
                 sweep);
         }
 
