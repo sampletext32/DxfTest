@@ -1,10 +1,21 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>DxfTest</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>DXF Test</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    Welcome to DxfTest
+    <div class="select-file">
+        <input type="file" accept=".dxf" name="file" id="file" class="input-file" />
+        <label class="select-button" for="file">Выберите файл</label>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/upload.js"></script>
 </body>
 </html>
