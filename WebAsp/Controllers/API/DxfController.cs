@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,9 +18,10 @@ namespace WebAsp.Controllers.API
     public class DxfController : ControllerBase
     {
         [HttpPost]
-        public ActionResult Upload()
+        public string Upload()
         {
             var upload = Request.Form.Files["file"];
+            Debug.WriteLine(upload.Name);
             if (upload != null)
             {
                 // получаем имя файла
@@ -32,11 +34,11 @@ namespace WebAsp.Controllers.API
 
                     var dxfFile = DxfFile.Load(ms);
                     var fileJson = new DxfToJsonConverter().EncodeFileJson(dxfFile);
-                    return Ok(fileJson);
+                    return fileJson;
                 }
             }
 
-            return BadRequest();
+            return "THERE IS A FUCKING ERROR";
         }
     }
 }

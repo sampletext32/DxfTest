@@ -1,0 +1,44 @@
+/* TODO: replace with reset.css */
+* { margin: 0; padding: 0; }
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.select-file {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-button {
+    padding: 20px;
+    background: #4089ff;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14pt;
+    transition: 0.4s;
+}
+
+.select-button:hover {
+    background: #286ad4;
+}
+
+.input-file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
