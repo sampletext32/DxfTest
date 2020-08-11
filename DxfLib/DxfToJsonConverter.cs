@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using IxMilia.Dxf;
 using IxMilia.Dxf.Entities;
 
-namespace DxfTest
+namespace DxfLib
 {
     public class DxfToJsonConverter
     {
