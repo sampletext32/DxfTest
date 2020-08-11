@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +69,10 @@ namespace DxfTest
                 dxfFile = DxfFile.Load(opf.FileName);
 
                 Renderer.Render(dxfFile, bitmap, pictureBoxMain.Width, pictureBoxMain.Height);
+
+                var encodedFile = new DxfToJsonConverter().EncodeFileJson(dxfFile);
+                File.WriteAllText("json.json", encodedFile);
+
                 pictureBoxMain.Refresh();
 
                 labelCost.Text = "Cost: " + new Mather().GetFileTotalLength(dxfFile) + " c.u.";
