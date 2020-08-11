@@ -1,4 +1,3 @@
-
 const hostUrl = "/api/dxf";
 const fileInput = document.getElementById("file");
 
@@ -13,8 +12,8 @@ async function handleFiles() {
 
     try {
         var response = await fetch(hostUrl, { method: "POST", body: formData });
-        let result = await response.text();
-        alert(result);
+        data = await response.json();
+        init();
     } catch (e) {
         console.error("Some problems: ", e);
     }
