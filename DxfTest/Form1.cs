@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DxfLib;
 using IxMilia.Dxf;
 using IxMilia.Dxf.Entities;
 
@@ -19,6 +20,8 @@ namespace DxfTest
         private Bitmap bitmap;
         private Point mouseStart;
         private bool dragging;
+
+        private float Arc { get; set; }
 
         private Renderer Renderer { get; set; }
 
@@ -87,6 +90,9 @@ namespace DxfTest
             {
                 e.Graphics.DrawImageUnscaled(bitmap, 0, 0);
             }
+
+            e.Graphics.DrawArc(Pens.Red, pictureBoxMain.Width / 2f - 50, pictureBoxMain.Height / 2f - 50, 100, 100, 0,
+                Arc);
         }
 
         private void pictureBoxMain_MouseDown(object sender, MouseEventArgs e)
@@ -137,6 +143,12 @@ namespace DxfTest
                     pictureBoxMain.Refresh();
                 }
             }
+        }
+
+        private void trackBarRotOffset_Scroll(object sender, EventArgs e)
+        {
+            // Arc = -(trackBarRotOffset.Value - 180);
+            pictureBoxMain.Refresh();
         }
     }
 }
