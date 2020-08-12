@@ -31,13 +31,20 @@ namespace WebAsp.Controllers.API
                     upload.CopyTo(ms);
                     ms.Seek(0, SeekOrigin.Begin);
 
-                    var dxfFile = DxfFile.Load(ms);
-                    var fileJson = new DxfToJsonConverter().EncodeFileJson(dxfFile);
-                    return fileJson;
+                    try
+                    {
+                        var dxfFile = DxfFile.Load(ms);
+                        var fileJson = new DxfToJsonConverter().EncodeFileJson(dxfFile);
+                        return fileJson;
+                    }
+                    catch
+                    {
+                        return "ERROR PARSING DXF FILE";
+                    }
                 }
             }
 
-            return "THERE IS A FUCKING ERROR";
+            return "NO FILE UPLOADED";
         }
     }
 }
