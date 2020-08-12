@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ namespace DxfLib
     public class DxfToJsonConverter
     {
         private DxfFile _dxfFile;
+
+        private readonly NumberFormatInfo _format = new NumberFormatInfo {NumberDecimalSeparator = "."};
+
+        public NumberFormatInfo Format => _format;
 
         public string EntitiesToJson(IList<DxfEntity> dxfEntities)
         {
@@ -70,11 +75,11 @@ namespace DxfLib
                 {
                     var current = enumerator.Current;
 
-                    json += string.Format("[ \"line\", {0}, {1}, {2}, {3}]",
-                        last.Location.X.ToString("F").Replace(',', '.'),
-                        last.Location.Y.ToString("F").Replace(',', '.'),
-                        current.Location.X.ToString("F").Replace(',', '.'),
-                        current.Location.Y.ToString("F").Replace(',', '.'));
+                    json += string.Format(Format, "[ \"line\", {0:F}, {1:F}, {2:F}, {3:F}]",
+                        last.Location.X,
+                        last.Location.Y,
+                        current.Location.X,
+                        current.Location.Y);
 
                     last = current;
                     if (enumerator.MoveNext())
@@ -93,11 +98,11 @@ namespace DxfLib
 
         public string EntityToJson(DxfLine dxfLine)
         {
-            return string.Format("[ \"line\", {0}, {1}, {2}, {3}]",
-                dxfLine.P1.X.ToString("F").Replace(',', '.'),
-                dxfLine.P1.Y.ToString("F").Replace(',', '.'),
-                dxfLine.P2.X.ToString("F").Replace(',', '.'),
-                dxfLine.P2.Y.ToString("F").Replace(',', '.'));
+            return string.Format(Format, "[ \"line\", {0:F}, {1:F}, {2:F}, {3:F}]",
+                dxfLine.P1.X,
+                dxfLine.P1.Y,
+                dxfLine.P2.X,
+                dxfLine.P2.Y);
         }
 
         public string EntityToJson(DxfSpline dxfSpline)
@@ -106,9 +111,10 @@ namespace DxfLib
             var dxfSplineControlPoints = dxfSpline.ControlPoints;
 
             string json = string.Join(", ",
-                dxfSplineControlPoints.Select(cp => string.Format("[ {0}, {1}]",
-                    cp.Point.X.ToString("F").Replace(',', '.'),
-                    cp.Point.Y.ToString("F").Replace(',', '.'))));
+                dxfSplineControlPoints.Select(cp =>
+                    string.Format(Format, "[ {0:F}, {1:F}]",
+                        cp.Point.X,
+                        cp.Point.Y)));
 
             return string.Format("[ \"spline\", {0}]", json);
         }
@@ -123,22 +129,22 @@ namespace DxfLib
 
             float sweep = (endAngle - startAngle - 360) % 360;
 
-            return string.Format("[ \"arc\", {0}, {1}, {2}, {3}, {4}]",
-                dxfArc.Center.X.ToString("F").Replace(',', '.'),
-                dxfArc.Center.Y.ToString("F").Replace(',', '.'),
-                dxfArc.Radius.ToString("F").Replace(',', '.'),
-                dxfArc.StartAngle.ToString("F").Replace(',', '.'),
-                sweep.ToString("F").Replace(',', '.'));
+            return string.Format(Format, "[ \"arc\", {0:F}, {1:F}, {2:F}, {3:F}, {4:F}]",
+                dxfArc.Center.X,
+                dxfArc.Center.Y,
+                dxfArc.Radius,
+                dxfArc.StartAngle,
+                sweep);
         }
 
         public string EntityToJson(DxfCircle dxfCircle)
         {
             // We dont care about center
 
-            return string.Format("[ \"circle\", {0}, {1}, {2} ]",
-                dxfCircle.Center.X.ToString("F").Replace(',', '.'),
-                dxfCircle.Center.Y.ToString("F").Replace(',', '.'),
-                dxfCircle.Radius.ToString("F").Replace(',', '.'));
+            return string.Format(Format, "[ \"circle\", {0:F}, {1:F}, {2:F} ]",
+                dxfCircle.Center.X,
+                dxfCircle.Center.Y,
+                dxfCircle.Radius);
         }
 
         public string EntityToJson(DxfInsert dxfInsert)
