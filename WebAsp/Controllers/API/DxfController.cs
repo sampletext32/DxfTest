@@ -21,7 +21,6 @@ namespace WebAsp.Controllers.API
         public string Upload()
         {
             var upload = Request.Form.Files["file"];
-            Debug.WriteLine(upload.Name);
             if (upload != null)
             {
                 // получаем имя файла
