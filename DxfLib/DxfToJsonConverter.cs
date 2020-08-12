@@ -121,20 +121,20 @@ namespace DxfLib
 
         public string EntityToJson(DxfArc dxfArc)
         {
-            float startAngle = (float)dxfArc.StartAngle;
-            float endAngle = (float)dxfArc.EndAngle;
+            // float startAngle = (float)dxfArc.StartAngle;
+            // float endAngle = (float)dxfArc.EndAngle;
 
-            startAngle *= -1;
-            endAngle *= -1;
-
-            float sweep = (endAngle - startAngle - 360) % 360;
+            // startAngle *= -1;
+            // endAngle *= -1;
+            // 
+            // float sweep = (endAngle - startAngle - 360) % 360;
 
             return string.Format(Format, "[ \"arc\", {0:F}, {1:F}, {2:F}, {3:F}, {4:F}]",
                 dxfArc.Center.X,
                 dxfArc.Center.Y,
                 dxfArc.Radius,
                 dxfArc.StartAngle,
-                sweep);
+                dxfArc.EndAngle);
         }
 
         public string EntityToJson(DxfCircle dxfCircle)
