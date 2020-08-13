@@ -6,7 +6,6 @@ var w, h; // canvas width & height shortcuts
 var offsetX = 0, offsetY = 0;
 var scale = 1.0;
 var ctx = canvas.getContext('2d');
-var mouseDown = 0;
 
 const minScaleLim = 0.1, maxScaleLim = 10.0;
 
@@ -34,10 +33,10 @@ function scaleCanvas(e) {
 }
 
 function mouseMove (e) {
-    if (!mouseDown)
-        return;
-    offsetX += e.movementX;
-    offsetY += e.movementY;
+    if (e.buttons === 1) {
+        offsetX += e.movementX;
+        offsetY += e.movementY;
+    }
 }
 
 function drawFrame() {
@@ -122,7 +121,7 @@ function drawPlot() {
                 break;
             case "spline": 
                 ctx.moveTo(scale*el[1][0] + offsetX, scale*el[1][1] + offsetY);
-                for (var j = 2; j < el.length - 1; j += 1) {
+                for (var j = 1; j < el.length - 1; j += 1) {
                     ctx.quadraticCurveTo(
                         scale*el[ j ][0] + offsetX, scale*el[ j ][1] + offsetY, 
                         scale*el[j+1][0] + offsetX, scale*el[j+1][1] + offsetY
@@ -144,9 +143,6 @@ function drawPlot() {
 window.onresize = resizeCanvas;
 window.onwheel = scaleCanvas;
 document.body.onmousemove = mouseMove;
-document.body.onmousedown = () => { ++mouseDown; }
-document.body.onmouseup = () => { --mouseDown; }
-
 
 /** DRIVER CODE **/
 
