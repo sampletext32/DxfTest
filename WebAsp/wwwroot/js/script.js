@@ -4,10 +4,11 @@
 var canvas = document.getElementById('canvas');
 var w, h; // canvas width & height shortcuts
 var offsetX = 0, offsetY = 0;
-var scale = 1.0;
+var scale = 3.0;
+var gridGap = 5 * scale;
 var ctx = canvas.getContext('2d');
 
-const minScaleLim = 0.1, maxScaleLim = 10.0;
+const minScaleLim = 0.1, maxScaleLim = 30.0;
 
 var dxfObjectsJson;
 
@@ -27,9 +28,13 @@ function resizeCanvas() {
 }
 
 function scaleCanvas(e) {
-    scale -= e.deltaY * 0.01;
+    scale -= e.deltaY * 0.05;
     if (scale < minScaleLim) scale = minScaleLim;
     if (scale > maxScaleLim) scale = maxScaleLim;
+
+    gridGap = 5 * scale;
+    if (gridGap > 80) gridGap = (gridGap / 10);
+    if (gridGap < 6) gridGap *= 10;
 }
 
 function mouseMove (e) {
@@ -59,43 +64,52 @@ function drawBackground() {
 }
 
 function drawGrid() {
+    const mrg = 10;
+    var gap = gridGap;
+    var start = 0;
+
     ctx.strokeStyle = "rgb(255, 255, 255, 0.3)";
 
     // vertical lines
     ctx.beginPath();
     ctx.lineWidth = 0.5;
-    for (var offset = 10; offset < w - 10; offset += 10)  {
-        ctx.moveTo(offset, 10);
-        ctx.lineTo(offset, h - 10);
+    start = mrg + offsetX % gap;
+    for (var offset = start; offset < w - mrg; offset += gap)  {
+        ctx.moveTo(offset, mrg);
+        ctx.lineTo(offset, h - mrg);
     }
     ctx.stroke();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    for (var offset = 10; offset < w - 10; offset += 100)  {
-        ctx.moveTo(offset, 10);
-        ctx.lineTo(offset, h - 10);
+    start = mrg + offsetX % (10*gap);
+    for (var offset = start; offset < w - mrg; offset += 10*gap)  {
+        ctx.moveTo(offset, mrg);
+        ctx.lineTo(offset, h - mrg);
     }
     ctx.stroke();
 
     // horizontal lines
+    ctx.beginPath();
     ctx.lineWidth = 0.5;
-    for (var offset = 10; offset < h - 10; offset += 10)  {
-        ctx.moveTo(10, offset);
-        ctx.lineTo(w - 10, offset);
+    start = mrg + offsetY % gap;
+    for (var offset = start; offset < h - mrg; offset += gap)  {
+        ctx.moveTo(mrg, offset);
+        ctx.lineTo(w - mrg, offset);
     }
     ctx.stroke();
     ctx.beginPath();
     ctx.lineWidth = 1;
-    for (var offset = 10; offset < h - 10; offset += 100)  {
-        ctx.moveTo(10, offset);
-        ctx.lineTo(w - 10, offset);
+    start = mrg + offsetY % (10*gap);
+    for (var offset = start; offset < h - mrg; offset += 10*gap)  {
+        ctx.moveTo(mrg, offset);
+        ctx.lineTo(w - mrg, offset);
     }
     ctx.stroke();
 
     // border
     ctx.lineWidth = 3;
     ctx.strokeStyle = "rgb(255, 255, 255, 0.7)";
-    ctx.strokeRect(10, 10, w - 20, h - 20);
+    ctx.strokeRect(mrg, mrg, w - 20, h - 20);
 
 }
 
@@ -104,9 +118,7 @@ function drawPlot() {
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 1.5;
 
-    for (var i = 0; i < dxfObjectsJson.length; i++) {
-        var el = dxfObjectsJson[i];
-
+    dxfObjectsJson.forEach(el => {
         ctx.beginPath();
         switch (el[0]) {
             case "line":
@@ -133,7 +145,7 @@ function drawPlot() {
                 break;
         }
         ctx.stroke();
-    }
+    });
 
 }
 

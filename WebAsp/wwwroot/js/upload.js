@@ -14,7 +14,7 @@ function handleFiles() {
         fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
             .then(response => response.json())
             .then(json => {
-                dxfObjectsJson = json;
+                dxfObjectsJson = invertYAxis(json);
                 init();
                 console.log('parsed json', json);
             })
@@ -22,4 +22,29 @@ function handleFiles() {
     } catch (e) {
         console.error("Some problems: ", e);
     }
+}
+
+
+function invertYAxis(data) {
+    data.forEach(el => {
+        switch (el[0]) {
+            case "line":
+                el[2] = -el[2];
+                el[4] = -el[4];
+                break;
+            case "circle":
+                el[2] = -el[2];
+                break;
+            case "arc":
+                el[2] = -el[2];
+                break;
+            case "spline":
+                for (var i = 1; i < el.length; i += 1) 
+                    el[i][1] = -el[i][1];
+                break;
+            default:
+                break;
+        }
+    });
+    return data;
 }
