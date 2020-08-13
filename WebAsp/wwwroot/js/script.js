@@ -10,6 +10,8 @@ var mouseDown = 0;
 
 const minScaleLim = 0.1, maxScaleLim = 10.0;
 
+var dxfObjectsJson;
+
 
 /** FUNCTIONS **/
 
@@ -103,8 +105,8 @@ function drawPlot() {
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 1.5;
 
-    for (var i = 0; i < data.length; i++) {
-        var el = data[i];
+    for (var i = 0; i < dxfObjectsJson.length; i++) {
+        var el = dxfObjectsJson[i];
 
         ctx.beginPath();
         switch (el[0]) {

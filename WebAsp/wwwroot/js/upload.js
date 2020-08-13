@@ -12,16 +12,14 @@ function handleFiles() {
 
 
     try {
-        fetch(hostUrl, { method: "POST", mode: "no-cors", body: formData })
-            .then(response => response.text())
-            .then(result => {
-                console.log('Success:', result);
+        fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
+            .then(response => response.json())
+            .then(json => {
+                dxfObjectsJson = json;
+                init();
+                // console.log('parsed json', json);
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-        init();
+            .catch(ex => console.log('parsing failed', ex));
     } catch (e) {
         console.error("Some problems: ", e);
     }
