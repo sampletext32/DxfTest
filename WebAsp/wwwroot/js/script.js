@@ -116,8 +116,10 @@ function drawPlot() {
                 break;
             case "circle":
                 ctx.arc(scale*el[1] + offsetX, scale*el[2] + offsetY, scale*el[3], 0, 2 * Math.PI);
+                break;
             case "arc":
                 ctx.arc(scale*el[1] + offsetX, scale*el[2] + offsetY, scale*el[3], el[4], el[5]);
+                break;
             case "spline": 
                 ctx.moveTo(scale*el[1][0] + offsetX, scale*el[1][1] + offsetY);
                 for (var j = 3; j < el.length - 1; j += 2) {
@@ -126,6 +128,7 @@ function drawPlot() {
                         scale*el[j+1][1] + offsetX, scale*el[j+1][1] + offsetY
                     );
                 }
+                break;
 
             default:
                 break;
