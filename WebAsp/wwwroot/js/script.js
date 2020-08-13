@@ -122,10 +122,10 @@ function drawPlot() {
                 break;
             case "spline": 
                 ctx.moveTo(scale*el[1][0] + offsetX, scale*el[1][1] + offsetY);
-                for (var j = 3; j < el.length - 1; j += 2) {
+                for (var j = 2; j < el.length - 1; j += 1) {
                     ctx.quadraticCurveTo(
-                        scale*el[ j ][0] + offsetX, scale*el[ j ][0] + offsetY, 
-                        scale*el[j+1][1] + offsetX, scale*el[j+1][1] + offsetY
+                        scale*el[ j ][0] + offsetX, scale*el[ j ][1] + offsetY, 
+                        scale*el[j+1][0] + offsetX, scale*el[j+1][1] + offsetY
                     );
                 }
                 break;
@@ -151,5 +151,3 @@ document.body.onmouseup = () => { --mouseDown; }
 /** DRIVER CODE **/
 
 resizeCanvas();
-
-// init();

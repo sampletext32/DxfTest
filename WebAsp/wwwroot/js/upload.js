@@ -10,14 +10,13 @@ function handleFiles() {
 
     formData.append("file", file);
 
-
     try {
         fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
             .then(response => response.json())
             .then(json => {
                 dxfObjectsJson = json;
                 init();
-                // console.log('parsed json', json);
+                console.log('parsed json', json);
             })
             .catch(ex => console.log('parsing failed', ex));
     } catch (e) {
