@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using DxfLib;
 using IxMilia.Dxf;
@@ -16,14 +11,10 @@ namespace DxfTest
 {
     public partial class Form1 : Form
     {
-        private DxfFile dxfFile;
-        private Bitmap bitmap;
-        private Point mouseStart;
+        private readonly Bitmap bitmap;
         private bool dragging;
-
-        private float Arc { get; set; }
-
-        private Renderer Renderer { get; set; }
+        private DxfFile dxfFile;
+        private Point mouseStart;
 
         public Form1()
         {
@@ -34,9 +25,13 @@ namespace DxfTest
             Renderer = new Renderer(1f, 0, 0);
         }
 
+        private float Arc { get; set; }
+
+        private Renderer Renderer { get; }
+
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
-            int delta = e.Delta / SystemInformation.MouseWheelScrollDelta;
+            var delta = e.Delta / SystemInformation.MouseWheelScrollDelta;
 
             Renderer.ScaleFactor += 0.1f * delta;
 
@@ -49,23 +44,17 @@ namespace DxfTest
 
         private Dictionary<string, int> CollectStats(IList<DxfEntity> dxgEntities)
         {
-            Dictionary<string, int> entitiesCount = new Dictionary<string, int>();
-            foreach (var name in Enum.GetNames(typeof(DxfEntityType)))
-            {
-                entitiesCount.Add(name.ToLower(), 0);
-            }
+            var entitiesCount = new Dictionary<string, int>();
+            foreach (var name in Enum.GetNames(typeof(DxfEntityType))) entitiesCount.Add(name.ToLower(), 0);
 
-            foreach (var dxfEntity in dxgEntities)
-            {
-                entitiesCount[dxfEntity.EntityTypeString.ToLower()]++;
-            }
+            foreach (var dxfEntity in dxgEntities) entitiesCount[dxfEntity.EntityTypeString.ToLower()]++;
 
             return entitiesCount;
         }
 
         private void buttonOpenDxf_Click(object sender, EventArgs e)
         {
-            OpenFileDialog opf = new OpenFileDialog();
+            var opf = new OpenFileDialog();
             opf.Filter = "DXF Files(*.dxf)|*.dxf";
             if (opf.ShowDialog() == DialogResult.OK)
             {
@@ -81,15 +70,12 @@ namespace DxfTest
                 labelCost.Text = "Cost: " + new Mather().GetFileTotalLength(dxfFile) + " c.u.";
             }
 
-            this.Focus();
+            Focus();
         }
 
         private void pictureBoxMain_Paint(object sender, PaintEventArgs e)
         {
-            if (bitmap != null)
-            {
-                e.Graphics.DrawImageUnscaled(bitmap, 0, 0);
-            }
+            if (bitmap != null) e.Graphics.DrawImageUnscaled(bitmap, 0, 0);
 
             e.Graphics.DrawArc(Pens.Red, pictureBoxMain.Width / 2f - 50, pictureBoxMain.Height / 2f - 50, 100, 100, 0,
                 Arc);
@@ -105,8 +91,8 @@ namespace DxfTest
         {
             if (dragging)
             {
-                int dx = e.Location.X - mouseStart.X;
-                int dy = e.Location.Y - mouseStart.Y;
+                var dx = e.Location.X - mouseStart.X;
+                var dy = e.Location.Y - mouseStart.Y;
 
                 mouseStart = e.Location;
 

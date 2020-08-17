@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IxMilia.Dxf;
 using IxMilia.Dxf.Entities;
 
@@ -13,45 +11,30 @@ namespace DxfLib
     {
         private DxfFile _dxfFile;
 
-        private readonly NumberFormatInfo _format = new NumberFormatInfo {NumberDecimalSeparator = "."};
-
-        public NumberFormatInfo Format => _format;
+        public NumberFormatInfo Format { get; } = new NumberFormatInfo {NumberDecimalSeparator = "."};
 
         public string EntitiesToJson(IList<DxfEntity> dxfEntities)
         {
-            string json = string.Join(", ", dxfEntities.Select(EntityToJson));
+            var json = string.Join(", ", dxfEntities.Select(EntityToJson));
             return json;
         }
 
         public string EntityToJson(DxfEntity dxfEntity)
         {
-            if (dxfEntity is DxfPolyline dxfPolyline)
-            {
-                return EntityToJson(dxfPolyline);
-            }
-            else if (dxfEntity is DxfLine dxfLine)
-            {
-                return EntityToJson(dxfLine);
-            }
-            else if (dxfEntity is DxfSpline dxfSpline)
-            {
-                return EntityToJson(dxfSpline);
-            }
-            else if (dxfEntity is DxfCircle dxfCircle)
+            if (dxfEntity is DxfPolyline dxfPolyline) return EntityToJson(dxfPolyline);
+
+            if (dxfEntity is DxfLine dxfLine) return EntityToJson(dxfLine);
+
+            if (dxfEntity is DxfSpline dxfSpline) return EntityToJson(dxfSpline);
+
+            if (dxfEntity is DxfCircle dxfCircle)
             {
                 if (dxfCircle is DxfArc dxfArc)
-                {
                     return EntityToJson(dxfArc);
-                }
-                else
-                {
-                    return EntityToJson(dxfCircle);
-                }
+                return EntityToJson(dxfCircle);
             }
-            else if (dxfEntity is DxfInsert dxfInsert)
-            {
-                return EntityToJson(dxfInsert);
-            }
+
+            if (dxfEntity is DxfInsert dxfInsert) return EntityToJson(dxfInsert);
 
             throw new ArgumentException($"Unknown DxfEntity {dxfEntity}");
 
@@ -62,13 +45,13 @@ namespace DxfLib
         {
             var dxfPolylineVertices = dxfPolyline.Vertices;
 
-            string json = "";
+            var json = "";
 
             using (var enumerator = dxfPolylineVertices.GetEnumerator())
             {
                 if (!enumerator.MoveNext()) return "{}";
 
-                DxfVertex last = enumerator.Current;
+                var last = enumerator.Current;
 
                 enumerator.MoveNext();
                 while (true)
@@ -83,13 +66,9 @@ namespace DxfLib
 
                     last = current;
                     if (enumerator.MoveNext())
-                    {
                         json += ", ";
-                    }
                     else
-                    {
                         break;
-                    }
                 }
             }
 
@@ -110,7 +89,7 @@ namespace DxfLib
             // TODO!
             var dxfSplineControlPoints = dxfSpline.ControlPoints;
 
-            string json = string.Join(", ",
+            var json = string.Join(", ",
                 dxfSplineControlPoints.Select(cp =>
                     string.Format(Format, "[ {0:F}, {1:F}]",
                         cp.Point.X,
@@ -151,7 +130,7 @@ namespace DxfLib
         {
             var dxfBlock = _dxfFile.Blocks.FirstOrDefault(t => t.Name == dxfInsert.Name);
 
-            string json = EntitiesToJson(dxfBlock.Entities);
+            var json = EntitiesToJson(dxfBlock.Entities);
             return json;
         }
 
@@ -162,11 +141,11 @@ namespace DxfLib
             //     entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
             // labelStats.Text = "\n\tFILE:\n" + typesString + "\n";
 
-            this._dxfFile = dxfFile;
+            _dxfFile = dxfFile;
 
-            string result = "[ " + EntitiesToJson(dxfFile.Entities) + "]";
+            var result = "[ " + EntitiesToJson(dxfFile.Entities) + "]";
 
-            this._dxfFile = null;
+            _dxfFile = null;
 
             return result;
         }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using IxMilia.Dxf;
 using IxMilia.Dxf.Entities;
 
@@ -12,23 +9,21 @@ namespace DxfTest
     public class Renderer
     {
         private DxfFile _dxfFile;
+
+        public Renderer(float scaleFactor, float offsetX, float offsetY)
+        {
+            ScaleFactor = scaleFactor;
+            OffsetX = offsetX;
+            OffsetY = offsetY;
+        }
+
         public float ScaleFactor { get; set; }
         public float OffsetX { get; set; }
         public float OffsetY { get; set; }
 
-        public Renderer(float scaleFactor, float offsetX, float offsetY)
-        {
-            this.ScaleFactor = scaleFactor;
-            this.OffsetX = offsetX;
-            this.OffsetY = offsetY;
-        }
-
         public void RenderEntities(IList<DxfEntity> dxfEntities, Graphics graphics, int height)
         {
-            foreach (var dxfEntity in dxfEntities)
-            {
-                RenderEntity(dxfEntity, graphics, height);
-            }
+            foreach (var dxfEntity in dxfEntities) RenderEntity(dxfEntity, graphics, height);
         }
 
         public void RenderEntity(DxfEntity dxfEntity, Graphics graphics, int height)
@@ -48,13 +43,9 @@ namespace DxfTest
             else if (dxfEntity is DxfCircle dxfCircle)
             {
                 if (dxfCircle is DxfArc dxfArc)
-                {
                     RenderEntity(dxfArc, graphics, height);
-                }
                 else
-                {
                     RenderEntity(dxfCircle, graphics, height);
-                }
             }
             else if (dxfEntity is DxfInsert dxfInsert)
             {
@@ -93,13 +84,13 @@ namespace DxfTest
 
         public void RenderEntity(DxfArc dxfArc, Graphics graphics, int height)
         {
-            float startAngle = (float)dxfArc.StartAngle;
-            float endAngle = (float)dxfArc.EndAngle;
+            var startAngle = (float)dxfArc.StartAngle;
+            var endAngle = (float)dxfArc.EndAngle;
 
             startAngle *= -1;
             endAngle *= -1;
 
-            float sweep = (endAngle - startAngle - 360) % 360;
+            var sweep = (endAngle - startAngle - 360) % 360;
 
             graphics.DrawArc(Pens.Black,
                 (float)(dxfArc.Center.X - dxfArc.Radius) * ScaleFactor + OffsetX,
@@ -128,10 +119,7 @@ namespace DxfTest
             //     entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
             // labelStats.Text += $"\n\t{dxfBlock.Name}:\n" + typesString + "\n";
 
-            foreach (var dxfEntity in dxfBlock.Entities)
-            {
-                RenderEntity(dxfEntity, graphics, height);
-            }
+            foreach (var dxfEntity in dxfBlock.Entities) RenderEntity(dxfEntity, graphics, height);
         }
 
         public void Render(DxfFile dxfFile, Bitmap bitmap, int width, int height)
@@ -141,9 +129,9 @@ namespace DxfTest
             //     entitiesCount.Keys.Where(k => entitiesCount[k] != 0).Select(k => k + ":" + entitiesCount[k]));
             // labelStats.Text = "\n\tFILE:\n" + typesString + "\n";
 
-            this._dxfFile = dxfFile;
+            _dxfFile = dxfFile;
 
-            using (Graphics graphics = Graphics.FromImage(bitmap))
+            using (var graphics = Graphics.FromImage(bitmap))
             {
                 // DXF Coordinates Y is upside-down
                 // https://3e-club.ru/view_full.php?id=24&name=dxf
@@ -151,7 +139,7 @@ namespace DxfTest
                 RenderEntities(dxfFile.Entities, graphics, height);
             }
 
-            this._dxfFile = null;
+            _dxfFile = null;
         }
     }
 }
