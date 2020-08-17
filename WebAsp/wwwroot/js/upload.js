@@ -39,7 +39,7 @@ function invertYAxis(data) {
             el[2] *= -1;
             break;
         case "spline":
-            for (var i = 1; i < el.length; i++)
+            for (let i = 1; i < el.length; i++)
                 el[i][1] *= -1;
             break;
         default:
