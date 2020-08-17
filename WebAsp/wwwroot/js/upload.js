@@ -29,18 +29,18 @@ function invertYAxis(data) {
     data.forEach(el => {
         switch (el[0]) {
         case "line":
-            el[2] = -el[2];
-            el[4] = -el[4];
+            el[2] *= -1;
+            el[4] *= -1;
             break;
         case "circle":
-            el[2] = -el[2];
+            el[2] *= -1;
             break;
         case "arc":
-            el[2] = -el[2];
+            el[2] *= -1;
             break;
         case "spline":
-            for (var i = 1; i < el.length; i += 1)
-                el[i][1] = -el[i][1];
+            for (var i = 1; i < el.length; i++)
+                el[i][1] *= -1;
             break;
         default:
             break;
