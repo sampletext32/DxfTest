@@ -75,9 +75,41 @@ namespace DxfLib
             return Distance(dxfLine.P1, dxfLine.P2);
         }
 
+        // SOURCE: https://medium.com/@all2one/how-to-compute-the-length-of-a-spline-e44f5f04c40
+        // ALSO: https://en.wikipedia.org/wiki/Gaussian_quadrature
+        private float ComputeSplineLength(Vector3f start, Vector3f startTangent, Vector3f end, Vector3f endTangent)
+        {
+            // Cubic Hermite spline derivative coefficients
+            var c0 = startTangent;
+            var c1 = 6.0f * (end - start) - 4.0f * startTangent - 2.0f * endTangent;
+            var c2 = 6.0f * (start - end) + 3.0f * (startTangent + endTangent);
+
+            Vector3f EvaluateDerivative(float t)
+            {
+                return c0 + t * (c1 + t * c2);
+            }
+
+            var gaussLegendreCoefficients = new float[5][]
+            {
+                new[] {0.0f, 0.5688889f},
+                new[] {-0.5384693f, 0.47862867f},
+                new[] {0.5384693f, 0.47862867f},
+                new[] {-0.90617985f, 0.23692688f},
+                new[] {0.90617985f, 0.23692688f}
+            };
+            var length = 0.0f;
+            foreach (var coefficient in gaussLegendreCoefficients)
+            {
+                // This and the final (0.5 *) below are needed for a change of interval to [0, 1] from [-1, 1]
+                var t = 0.5f * (1.0f + coefficient[0]);
+                length += EvaluateDerivative(t).Length * coefficient[1];
+            }
+
+            return 0.5f * length;
+        }
+
         public float GetEntityLength(DxfSpline dxfSpline)
         {
-            // TODO!
             var dxfSplineControlPoints = dxfSpline.ControlPoints;
 
             var sumDistance = 0f;
@@ -90,7 +122,8 @@ namespace DxfLib
                 while (enumerator.MoveNext())
                 {
                     var current = enumerator.Current.Point;
-                    sumDistance += Distance(current, last);
+                    // sumDistance += Distance(current, last);
+                    sumDistance += ComputeSplineLength(last, dxfSpline.StartTangent, current, dxfSpline.EndTangent);
                     last = current;
                 }
             }
