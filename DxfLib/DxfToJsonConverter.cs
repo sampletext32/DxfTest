@@ -143,7 +143,7 @@ namespace DxfLib
 
             _dxfFile = dxfFile;
 
-            var result = string.Format(Format, "{{\"cost\":{0},entities:[{1}]}}",
+            var result = string.Format(Format, "{{\"cost\":{0:2F},entities:[{1}]}}",
                 new Mather().GetFileTotalLength(dxfFile), EntitiesToJson(dxfFile.Entities));
 
             _dxfFile = null;
