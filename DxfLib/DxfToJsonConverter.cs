@@ -58,7 +58,7 @@ namespace DxfLib
                 {
                     var current = enumerator.Current;
 
-                    json += string.Format(Format, "[ \"line\", {0:F}, {1:F}, {2:F}, {3:F}]",
+                    json += string.Format(Format, "[\"line\",{0:F},{1:F},{2:F},{3:F}]",
                         last.Location.X,
                         last.Location.Y,
                         current.Location.X,
@@ -77,7 +77,7 @@ namespace DxfLib
 
         public string EntityToJson(DxfLine dxfLine)
         {
-            return string.Format(Format, "[ \"line\", {0:F}, {1:F}, {2:F}, {3:F}]",
+            return string.Format(Format, "[\"line\",{0:F},{1:F},{2:F},{3:F}]",
                 dxfLine.P1.X,
                 dxfLine.P1.Y,
                 dxfLine.P2.X,
@@ -91,11 +91,11 @@ namespace DxfLib
 
             var json = string.Join(", ",
                 dxfSplineControlPoints.Select(cp =>
-                    string.Format(Format, "[ {0:F}, {1:F}]",
+                    string.Format(Format, "[{0:F},{1:F}]",
                         cp.Point.X,
                         cp.Point.Y)));
 
-            return string.Format("[ \"spline\", {0}]", json);
+            return string.Format("[\"spline\",{0}]", json);
         }
 
         public string EntityToJson(DxfArc dxfArc)
@@ -108,7 +108,7 @@ namespace DxfLib
             // 
             // float sweep = (endAngle - startAngle - 360) % 360;
 
-            return string.Format(Format, "[ \"arc\", {0:F}, {1:F}, {2:F}, {3:F}, {4:F}]",
+            return string.Format(Format, "[\"arc\",{0:F},{1:F},{2:F},{3:F},{4:F}]",
                 dxfArc.Center.X,
                 dxfArc.Center.Y,
                 dxfArc.Radius,
@@ -120,7 +120,7 @@ namespace DxfLib
         {
             // We dont care about center
 
-            return string.Format(Format, "[ \"circle\", {0:F}, {1:F}, {2:F} ]",
+            return string.Format(Format, "[\"circle\",{0:F},{1:F},{2:F}]",
                 dxfCircle.Center.X,
                 dxfCircle.Center.Y,
                 dxfCircle.Radius);
