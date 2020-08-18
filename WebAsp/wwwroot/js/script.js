@@ -2,11 +2,12 @@
 /** VARIABLES **/
 
 var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
 var w, h; // canvas width & height shortcuts
 var offsetX = 0, offsetY = 0;
 var scale = 3.0;
 var gridGap = 5 * scale;
-var ctx = canvas.getContext("2d");
+var canvasVisible = false;
 
 const minScaleLim = 0.1, maxScaleLim = 30.0;
 
@@ -16,9 +17,11 @@ var dxfObjectsJson;
 /** FUNCTIONS **/
 
 function init() {
+    resizeCanvas();
     ctx.lineWidth = 1.5;
     offsetX = w / 3;
     offsetY = h / 3;
+    canvasVisible = true;
     window.requestAnimationFrame(drawFrame);
 }
 
@@ -28,20 +31,25 @@ function resizeCanvas() {
 }
 
 function scaleCanvas(e) {
-    scale -= e.deltaY * 0.05;
+    scale -= (e.deltaY * 0.01) * Math.sqrt(scale);
     if (scale < minScaleLim) scale = minScaleLim;
     if (scale > maxScaleLim) scale = maxScaleLim;
 
     gridGap = 5 * scale;
     if (gridGap > 80) gridGap = (gridGap / 10);
     if (gridGap < 6) gridGap *= 10;
+
+    window.requestAnimationFrame(drawFrame);
+    _debugShowScale(scale)
 }
 
 function mouseMove(e) {
-    if (e.buttons === 1) {
+    if (e.buttons === 1 && canvasVisible) {
         offsetX += e.movementX;
         offsetY += e.movementY;
+        window.requestAnimationFrame(drawFrame);
     }
+    _debugShowMouseCoords((e.clientX - offsetX)/scale, (e.clientY - offsetY)/scale);
 }
 
 function drawFrame() {
@@ -55,7 +63,6 @@ function drawFrame() {
     drawPlot();
 
     ctx.restore();
-    window.requestAnimationFrame(drawFrame);
 }
 
 function drawBackground() {
@@ -157,7 +164,3 @@ function drawPlot() {
 window.onresize = resizeCanvas;
 window.onwheel = scaleCanvas;
 document.body.onmousemove = mouseMove;
-
-/** DRIVER CODE **/
-
-resizeCanvas();
