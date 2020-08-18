@@ -3,6 +3,7 @@
 
 var canvas = document.getElementById("canvas");
 var controls = document.getElementById("controls");
+var costSpan = document.getElementById("cost");
 var ctx = canvas.getContext("2d");
 var w, h; // canvas width & height shortcuts
 var offsetX = 0, offsetY = 0;
@@ -13,7 +14,8 @@ var canvasVisible = false;
 
 const minScaleLim = 0.1, maxScaleLim = 30.0;
 
-var dxfObjectsJson;
+var dxfEntities;
+var dxfCost;
 
 
 /** FUNCTIONS **/
@@ -26,6 +28,8 @@ function init() {
     canvasVisible = true;
     canvas.style.display = "block";
     controls.style.display = "block";
+
+    costSpan.innerHTML = dxfCost;
 
     window.requestAnimationFrame(drawFrame);
 }
@@ -45,7 +49,7 @@ function scaleCanvas(delta) {
     if (gridGap < 6) gridGap *= 10;
 
     window.requestAnimationFrame(drawFrame);
-    _debugShowScale(scale)
+    _debugShowScale(scale);
 }
 
 function onWheel(e) {
@@ -136,7 +140,7 @@ function drawPlot() {
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 1.5;
 
-    dxfObjectsJson.forEach(el => {
+    dxfEntities.forEach(el => {
         ctx.beginPath();
         switch (el[0]) {
         case "line":

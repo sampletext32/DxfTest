@@ -13,8 +13,9 @@ function handleFiles() {
         fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
             .then(response => response.json())
             .then(json => {
-                dxfObjectsJson = invertYAxis(json);
-                console.log("Processed json", dxfObjectsJson);
+                dxfCost = json["cost"];
+                dxfEntities = invertYAxis(json["entities"]);
+                console.log("Processed json", json);
                 init();
             })
             .catch(ex => console.log("Parsing failed", ex));
