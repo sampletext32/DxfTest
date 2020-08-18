@@ -37,6 +37,9 @@ function invertYAxis(data) {
             break;
         case "arc":
             el[2] *= -1;
+            el[4] = 2*Math.PI - degToRad(el[4]);
+            el[5] = 2*Math.PI - degToRad(el[5]);
+            [el[4], el[5]] = [el[5], el[4]];
             break;
         case "spline":
             for (let i = 1; i < el.length; i++)
@@ -47,4 +50,8 @@ function invertYAxis(data) {
         }
     });
     return data;
+}
+
+function degToRad(deg) {
+    return deg * Math.PI / 180;
 }

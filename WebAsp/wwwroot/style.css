@@ -43,6 +43,14 @@ body {
 	z-index: -1;
 }
 
+/* CONTROLS */
+
+.controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 /* DEBUG */
 
 .debug-values {

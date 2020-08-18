@@ -5,6 +5,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var w, h; // canvas width & height shortcuts
 var offsetX = 0, offsetY = 0;
+var currMouseAbs = { X: 0, Y: 0 };
 var scale = 3.0;
 var gridGap = 5 * scale;
 var canvasVisible = false;
@@ -31,7 +32,7 @@ function resizeCanvas() {
 }
 
 function scaleCanvas(e) {
-    scale -= (e.deltaY * 0.01) * Math.sqrt(scale);
+    scale -= (e.deltaY * 0.02) * Math.sqrt(scale);
     if (scale < minScaleLim) scale = minScaleLim;
     if (scale > maxScaleLim) scale = maxScaleLim;
 
@@ -49,7 +50,9 @@ function mouseMove(e) {
         offsetY += e.movementY;
         window.requestAnimationFrame(drawFrame);
     }
-    _debugShowMouseCoords((e.clientX - offsetX)/scale, (e.clientY - offsetY)/scale);
+    currMouseAbs.X = (e.clientX - offsetX)/scale;
+    currMouseAbs.Y = (e.clientY - offsetY)/scale;
+    _debugShowMouseCoords(currMouseAbs.X, currMouseAbs.Y);
 }
 
 function drawFrame() {
