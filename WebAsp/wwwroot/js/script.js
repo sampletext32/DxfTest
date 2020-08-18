@@ -2,6 +2,7 @@
 /** VARIABLES **/
 
 var canvas = document.getElementById("canvas");
+var controls = document.getElementById("controls");
 var ctx = canvas.getContext("2d");
 var w, h; // canvas width & height shortcuts
 var offsetX = 0, offsetY = 0;
@@ -23,6 +24,9 @@ function init() {
     offsetX = w / 3;
     offsetY = h / 3;
     canvasVisible = true;
+    canvas.style.display = "block";
+    controls.style.display = "block";
+
     window.requestAnimationFrame(drawFrame);
 }
 
@@ -31,8 +35,8 @@ function resizeCanvas() {
     w = canvas.width = window.innerWidth;
 }
 
-function scaleCanvas(e) {
-    scale -= (e.deltaY * 0.02) * Math.sqrt(scale);
+function scaleCanvas(delta) {
+    scale -= (delta * 0.02) * Math.sqrt(scale);
     if (scale < minScaleLim) scale = minScaleLim;
     if (scale > maxScaleLim) scale = maxScaleLim;
 
@@ -42,6 +46,10 @@ function scaleCanvas(e) {
 
     window.requestAnimationFrame(drawFrame);
     _debugShowScale(scale)
+}
+
+function onWheel(e) {
+    scaleCanvas(e.deltaY);
 }
 
 function mouseMove(e) {
@@ -165,5 +173,5 @@ function drawPlot() {
 /** LISTENERS **/
 
 window.onresize = resizeCanvas;
-window.onwheel = scaleCanvas;
+window.onwheel = onWheel;
 document.body.onmousemove = mouseMove;

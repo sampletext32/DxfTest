@@ -14,11 +14,11 @@
 
         <canvas id="canvas"></canvas>
 
-        <div class="controls">
-            <div class="cost">Стоимость плоттинга: <span id="cost">123</span> рублей</div>
-            <button class="ctrl-btn">open</button>
-            <button class="ctrl-btn">+</button>
-            <button class="ctrl-btn">-</button>
+        <div class="controls" id="controls">
+            <div class="control cost">Стоимость плоттинга: <span id="cost">123</span> рублей</div>
+            <button class="control btn"><label for="file"><i class="far fa-folder-open"></i></label></button>
+            <button class="control btn" onclick="scaleCanvas(-10)"><i class="fas fa-plus"></i></button>
+            <button class="control btn" onclick="scaleCanvas(+10)"><i class="fas fa-minus"></i></button>
         </div>
 
         <div class="debug-values">
@@ -29,5 +29,6 @@
         <script src="js/upload.js"></script>
         <script src="js/debug.js"></script>
         <script src="js/script.js"></script>
+        <script src="https://kit.fontawesome.com/12276d47be.js" crossorigin="anonymous"></script>
     </body>
 </html>

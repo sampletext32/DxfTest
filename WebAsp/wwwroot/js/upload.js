@@ -4,7 +4,6 @@ const fileInput = document.getElementById("file");
 fileInput.addEventListener("change", handleFiles, false);
 
 function handleFiles() {
-    canvas.style.display = "block";
     var formData = new FormData();
     const file = fileInput.files[0];
 
@@ -15,10 +14,10 @@ function handleFiles() {
             .then(response => response.json())
             .then(json => {
                 dxfObjectsJson = invertYAxis(json);
+                console.log("Processed json", dxfObjectsJson);
                 init();
-                console.log("parsed json", json);
             })
-            .catch(ex => console.log("parsing failed", ex));
+            .catch(ex => console.log("Parsing failed", ex));
     } catch (e) {
         console.error("Some problems: ", e);
     }
