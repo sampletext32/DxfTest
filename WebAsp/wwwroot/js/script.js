@@ -62,8 +62,8 @@ function mouseMove(e) {
         offsetY += e.movementY;
         window.requestAnimationFrame(drawFrame);
     }
-    currMouseAbs.X = (e.clientX - offsetX)/scale;
-    currMouseAbs.Y = (e.clientY - offsetY)/scale;
+    currMouseAbs.X = (e.clientX - offsetX) / scale;
+    currMouseAbs.Y = (e.clientY - offsetY) / scale;
     _debugShowMouseCoords(currMouseAbs.X, currMouseAbs.Y);
 }
 
