@@ -29,7 +29,7 @@ function init() {
     canvas.style.display = "block";
     controls.style.display = "block";
 
-    costSpan.innerHTML = dxfCost;
+    costSpan.innerHTML = document.dxfData["cost"];
 
     window.requestAnimationFrame(drawFrame);
 }
@@ -140,27 +140,27 @@ function drawPlot() {
     ctx.strokeStyle = "#ffffff";
     ctx.lineWidth = 1.5;
 
-    dxfEntities.forEach(el => {
+    document.dxfData["entities"].forEach(dxfEntity => {
         ctx.beginPath();
-        switch (el[0]) {
+        switch (dxfEntity[0]) {
         case "line":
-            ctx.moveTo(scale * el[1] + offsetX, scale * el[2] + offsetY);
-            ctx.lineTo(scale * el[3] + offsetX, scale * el[4] + offsetY);
+            ctx.moveTo(scale * dxfEntity[1] + offsetX, scale * dxfEntity[2] + offsetY);
+            ctx.lineTo(scale * dxfEntity[3] + offsetX, scale * dxfEntity[4] + offsetY);
             break;
         case "circle":
-            ctx.arc(scale * el[1] + offsetX, scale * el[2] + offsetY, scale * el[3], 0, 2 * Math.PI);
+            ctx.arc(scale * dxfEntity[1] + offsetX, scale * dxfEntity[2] + offsetY, scale * dxfEntity[3], 0, 2 * Math.PI);
             break;
         case "arc":
-            ctx.arc(scale * el[1] + offsetX, scale * el[2] + offsetY, scale * el[3], el[4], el[5]);
+            ctx.arc(scale * dxfEntity[1] + offsetX, scale * dxfEntity[2] + offsetY, scale * dxfEntity[3], dxfEntity[4], dxfEntity[5]);
             break;
         case "spline":
-            ctx.moveTo(scale * el[1][0] + offsetX, scale * el[1][1] + offsetY);
-            for (let j = 1; j < el.length - 1; j++) {
+            ctx.moveTo(scale * dxfEntity[1][0] + offsetX, scale * dxfEntity[1][1] + offsetY);
+            for (let j = 1; j < dxfEntity.length - 1; j++) {
                 ctx.quadraticCurveTo(
-                    scale * el[j][0] + offsetX,
-                    scale * el[j][1] + offsetY,
-                    scale * el[j + 1][0] + offsetX,
-                    scale * el[j + 1][1] + offsetY
+                    scale * dxfEntity[j][0] + offsetX,
+                    scale * dxfEntity[j][1] + offsetY,
+                    scale * dxfEntity[j + 1][0] + offsetX,
+                    scale * dxfEntity[j + 1][1] + offsetY
                 );
             }
             break;

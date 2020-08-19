@@ -13,8 +13,8 @@ function handleFiles() {
         fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
             .then(response => response.json())
             .then(json => {
-                dxfCost = json["cost"];
-                dxfEntities = invertYAxis(json["entities"]);
+                json["entities"] = invertYAxis(json["entities"]);
+                document.dxfData = json;
                 console.log("Processed json", json);
                 init();
             })
