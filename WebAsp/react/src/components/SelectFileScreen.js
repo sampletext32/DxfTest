@@ -1,11 +1,11 @@
 import React from 'react';
-import './SelectFileScreen.css';
+import '../styles/SelectFileScreen.css';
 
 class SelectFileScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.fileChange = this.fileChange.bind(this)
+        this.fileChange = this.fileChange.bind(this);
     }
 
     fileChange(e) {

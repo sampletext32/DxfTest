@@ -1,43 +1,49 @@
 import React from 'react';
 import './App.css';
-import SelectFileScreen from './SelectFileScreen/SelectFileScreen'
-import Canvas from './Canvas/Canvas';
+import Canvas from './components/Canvas';
+import SelectFileScreen from './components/SelectFileScreen'
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            blueprint: undefined,
+            dxf: { cost: 0, entities: [] },
             isLoaded: false
         };
+        this.handleFileUpload = this.handleFileUpload.bind(this);
     }
 
     handleFileUpload(file) {
         var formData = new FormData();
         formData.append("file", file);
-    
-        try {
-            fetch("https://u1123042.plsk.regruhosting.ru/api/dxf", { method: "POST", mode: "cors", body: formData })
-                .then(response => response.json())
-                .then(json => {
+
+        fetch("https://u1123042.plsk.regruhosting.ru/api/dxf", { method: "POST", body: formData })
+            .then(response => response.json())
+            .then(
+                (result) => {
                     // dxfObjectsJson = invertYAxis(json);
-                    // init();
-                    console.log('parsed json', json);
-                })
-                .catch(err => console.log('Parsing failed', err));
-        } catch (e) {
-            console.error("Some problems: ", e);
-        }
+                    this.setState({
+                        dxf: {
+                            cost: result.cost,
+                            entities: result.entities
+                        },
+                        isLoaded: true
+                    });
+                    console.log('parsed json', result);
+                },
+                (err) => {
+                    console.log('Parsing failed', err)
+                }
+            );
     }
 
     render() {
-        return (
-            <div>
-                <SelectFileScreen onFileUpload={this.handleFileUpload} />
-                <Canvas />
-            </div>
-        )
+        if (!this.state.isLoaded) {
+            return <SelectFileScreen onFileUpload={this.handleFileUpload} />;
+        } else {
+            return <Canvas dxf={this.state.dxf}/>;
+        }
     }
 }
 
