@@ -53,7 +53,8 @@ function scaleCanvas(delta) {
 }
 
 function onWheel(e) {
-    scaleCanvas(e.deltaY);
+    if (canvasVisible)
+        scaleCanvas(e.deltaY);
 }
 
 function mouseMove(e) {

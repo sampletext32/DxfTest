@@ -9,19 +9,15 @@ function handleFiles() {
 
     formData.append("file", file);
 
-    try {
-        fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
-            .then(response => response.json())
-            .then(json => {
-                json["entities"] = invertYAxis(json["entities"]);
-                document.dxfData = json;
-                console.log("Processed json", json);
-                init();
-            })
-            .catch(ex => console.log("Parsing failed", ex));
-    } catch (e) {
-        console.error("Some problems: ", e);
-    }
+    fetch(hostUrl, { method: "POST", mode: "cors", body: formData })
+        .then(response => response.json())
+        .then(json => {
+            json["entities"] = invertYAxis(json["entities"]);
+            document.dxfData = json;
+            console.log("Processed json", json);
+            init();
+        })
+        // .catch(ex => console.log("Parsing failed", ex));
 }
 
 

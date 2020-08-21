@@ -91,3 +91,6 @@ label { cursor: pointer; }
     line-height: 21px;
 }
 
+#_debug_errors {
+    color: red;
+}
