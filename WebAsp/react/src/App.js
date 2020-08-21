@@ -12,6 +12,7 @@ class App extends React.Component {
             isLoaded: false
         };
         this.handleFileUpload = this.handleFileUpload.bind(this);
+        this.loadNewFile = this.loadNewFile.bind(this);
     }
 
     handleFileUpload(file) {
@@ -38,11 +39,19 @@ class App extends React.Component {
             );
     }
 
+    loadNewFile() {
+        this.setState({
+            dxf: { cost: 0, entities: [] },
+            isLoaded: false
+        });
+
+    }
+
     render() {
         if (!this.state.isLoaded) {
             return <SelectFileScreen onFileUpload={this.handleFileUpload} />;
         } else {
-            return <Canvas dxf={this.state.dxf}/>;
+            return <Canvas dxf={this.state.dxf} triggerNewFile={this.loadNewFile}/>;
         }
     }
 }

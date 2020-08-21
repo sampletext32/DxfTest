@@ -3,19 +3,23 @@ import GridHelper from '../models/GridHelper'
 import '../styles/Canvas.css';
 
 class Canvas extends React.Component {
-    
+
     constructor(props) {
         super(props);
 
-        this.handleMouseMove  = this.handleMouseMove.bind(this);
+        // BINDINGS
+        this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
+        this.openNewFileClick = this.openNewFileClick.bind(this);
+        this.zoom = this.zoom.bind(this);
         this.canvasRef = React.createRef();
+        this.newFileRef = React.createRef();
 
-        // CANVAS-related variables
+        // CANVAS-RELATED VARIABLES
         this.ctx = undefined;
         this.gridHelper = undefined;
         this.scale = 3.0;
-        this.offset = { x: 0, y: 0 };    
+        this.offset = { x: 0, y: 0 };
     }
 
     componentDidMount() {
@@ -53,52 +57,56 @@ class Canvas extends React.Component {
         const scale = this.scale;
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 1.5;
-    
+
         this.props.dxf.entities.forEach(el => {
             ctx.beginPath();
             switch (el[0]) {
-            case "line":
-                ctx.moveTo(scale * el[1] + offset.x, scale * el[2] + offset.y);
-                ctx.lineTo(scale * el[3] + offset.x, scale * el[4] + offset.y);
-                break;
-            case "circle":
-                ctx.arc(scale * el[1] + offset.x, scale * el[2] + offset.y, scale * el[3], 0, 2 * Math.PI);
-                break;
-            case "arc":
-                ctx.arc(scale * el[1] + offset.x, scale * el[2] + offset.y, scale * el[3], el[4], el[5]);
-                break;
-            case "spline":
-                ctx.moveTo(scale * el[1][0] + offset.x, scale * el[1][1] + offset.y);
-                for (let j = 1; j < el.length - 1; j++) {
-                    ctx.quadraticCurveTo(
-                        scale * el[j][0] + offset.x,
-                        scale * el[j][1] + offset.y,
-                        scale * el[j + 1][0] + offset.x,
-                        scale * el[j + 1][1] + offset.y
-                    );
-                }
-                break;
-    
-            default:
-                break;
+                case "line":
+                    ctx.moveTo(scale * el[1] + offset.x, scale * el[2] + offset.y);
+                    ctx.lineTo(scale * el[3] + offset.x, scale * el[4] + offset.y);
+                    break;
+                case "circle":
+                    ctx.arc(scale * el[1] + offset.x, scale * el[2] + offset.y, scale * el[3], 0, 2 * Math.PI);
+                    break;
+                case "arc":
+                    ctx.arc(scale * el[1] + offset.x, scale * el[2] + offset.y, scale * el[3], el[4], el[5]);
+                    break;
+                case "spline":
+                    ctx.moveTo(scale * el[1][0] + offset.x, scale * el[1][1] + offset.y);
+                    for (let j = 1; j < el.length - 1; j++) {
+                        ctx.quadraticCurveTo(
+                            scale * el[j][0] + offset.x,
+                            scale * el[j][1] + offset.y,
+                            scale * el[j + 1][0] + offset.x,
+                            scale * el[j + 1][1] + offset.y
+                        );
+                    }
+                    break;
+
+                default:
+                    break;
             }
             ctx.stroke();
         });
-    
+
     }
 
     handleMouseMove(e) {
         if (e.buttons === 1) {
             this.offset.x += e.movementX;
             this.offset.y += e.movementY;
-            window.requestAnimationFrame(() => {this.drawFrame()});
+            window.requestAnimationFrame(() => { this.drawFrame() });
         }
     }
 
     handleMouseWheel(e) {
-        this.scale = this.getNewScale(Math.sign(e.deltaY));
+        this.zoom(Math.sign(e.deltaY));
+    }
+
+    zoom(sign) {
+        this.scale = this.getNewScale(sign);
         this.gridHelper.updateScale(this.scale);
-        window.requestAnimationFrame(() => {this.drawFrame()});
+        window.requestAnimationFrame(() => { this.drawFrame() });
     }
 
     getNewScale(delta) {
@@ -112,14 +120,33 @@ class Canvas extends React.Component {
         return scale;
     }
 
+    openNewFileClick() {
+        this.props.triggerNewFile();
+        setTimeout(() => {
+            this.newFileRef.current.click();
+        }, 0);
+    }
+
     render() {
         return (
-            <canvas 
-                ref={this.canvasRef} 
-                onMouseMove={this.handleMouseMove} 
-                onWheel={this.handleMouseWheel}
-                id="canvas">
-            </canvas>
+            <div>
+                <canvas
+                    ref={this.canvasRef}
+                    onMouseMove={this.handleMouseMove}
+                    onWheel={this.handleMouseWheel}
+                    id="canvas">
+                </canvas>
+                <div className="controls" id="controls">
+                    <div className="control cost">
+                        Стоимость плоттинга: <span id="cost">{ this.props.cost }</span> у.е.
+                    </div>
+                    <label htmlFor="file" className="control btn" onClick={this.openNewFileClick} ref={this.newFileRef}>
+                        <i className="far fa-folder-open"></i>
+                    </label>
+                    <button className="control btn" onClick={() => this.zoom(-1)}><i className="fas fa-plus"></i></button>
+                    <button className="control btn" onClick={() => this.zoom(+1)}><i className="fas fa-minus"></i></button>
+                </div>
+            </div>
         );
     }
 }
