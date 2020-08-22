@@ -37,8 +37,6 @@ namespace DxfLib
             if (dxfEntity is DxfInsert dxfInsert) return EntityToJson(dxfInsert);
 
             throw new ArgumentException($"Unknown DxfEntity {dxfEntity}");
-
-            return "{}";
         }
 
         public string EntityToJson(DxfPolyline dxfPolyline)

@@ -34,8 +34,6 @@ namespace DxfLib
             if (dxfEntity is DxfInsert dxfInsert) return GetEntityLength(dxfInsert);
 
             throw new ArgumentException($"Unknown DxfEntity {dxfEntity}");
-
-            return 0f;
         }
 
         private float Distance(DxfPoint p1, DxfPoint p2)
