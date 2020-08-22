@@ -1,0 +1,41 @@
+name: .NET Core
+'on':
+  push:
+    branches:
+      - master
+      
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: dotnet Build DxfLib
+        run: dotnet build DxfLib/DxfLib.csproj -c Release
+      - name: dotnet Build WebAsp
+        run: dotnet build WebAsp/WebAsp.csproj -c Release
+      - name: Publish
+        run: dotnet publish WebAsp/WebAsp.csproj -c Release --framework netcoreapp3.1 --runtime win-x64
+        # make an artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: /home/runner/work/DxfTest/DxfTest/WebAsp/bin/Release/netcoreapp3.1/win-x64/publish/
+      - uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: build
+          path: build
+      - name: FTP Deploy To REG.RU
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        with:
+            ftp-server: ftp://u1123042.plsk.regruhosting.ru/httpdocs/
+            ftp-username: u1123042
+            ftp-password: ${{ secrets.FTP_PASSWORD }}
+            local-dir: 'build/' # sync only build folder
+            git-ftp-args: --all # upload all files
