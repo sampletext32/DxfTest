@@ -27,6 +27,8 @@
     font-size: 17px;
     height: 40px;
     width: 40px;
+    line-height: 30px;
+    text-align: center;
     cursor: pointer;
     box-sizing: border-box;
 }

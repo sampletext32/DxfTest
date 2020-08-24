@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppContext } from '../AppContext';
+import CanvasControls from './CanvasControls';
 import GridHelper from '../models/GridHelper';
 import '../styles/Canvas.css';
 
@@ -128,16 +129,7 @@ class Canvas extends React.Component {
                     onWheel={this.handleMouseWheel}
                     id="canvas">
                 </canvas>
-                <div className="controls" id="controls">
-                    <div className="control cost">
-                        Стоимость плоттинга: <span id="cost">{ this.context.cost }</span> у.е.
-                    </div>
-                    <label htmlFor="file" className="control btn" onClick={() => this.context.triggerNewFile()}>
-                        <i className="far fa-folder-open"></i>
-                    </label>
-                    <button className="control btn" onClick={() => this.zoom(-1)}><i className="fas fa-plus"></i></button>
-                    <button className="control btn" onClick={() => this.zoom(+1)}><i className="fas fa-minus"></i></button>
-                </div>
+                <CanvasControls zoom={this.zoom}/>
             </div>
         );
     }
