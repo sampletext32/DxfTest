@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppContextProvider } from '../AppContextProvider';
 import { AppContext } from '../AppContext';
 import GridHelper from '../models/GridHelper';
 import '../styles/Canvas.css';
@@ -12,10 +11,8 @@ class Canvas extends React.Component {
         // BINDINGS
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
-        this.openNewFileClick = this.openNewFileClick.bind(this);
         this.zoom = this.zoom.bind(this);
         this.canvasRef = React.createRef();
-        this.newFileRef = React.createRef();
 
         // CANVAS-RELATED VARIABLES
         this.ctx = undefined;
@@ -122,13 +119,6 @@ class Canvas extends React.Component {
         return scale;
     }
 
-    openNewFileClick() {
-        this.context.triggerNewFile();
-        setTimeout(() => {
-            this.newFileRef.current.click();
-        }, 0);
-    }
-
     render() {
         return (
             <div>
@@ -142,7 +132,7 @@ class Canvas extends React.Component {
                     <div className="control cost">
                         Стоимость плоттинга: <span id="cost">{ this.context.cost }</span> у.е.
                     </div>
-                    <label htmlFor="file" className="control btn" onClick={this.openNewFileClick} ref={this.newFileRef}>
+                    <label htmlFor="file" className="control btn" onClick={() => this.context.triggerNewFile()}>
                         <i className="far fa-folder-open"></i>
                     </label>
                     <button className="control btn" onClick={() => this.zoom(-1)}><i className="fas fa-plus"></i></button>

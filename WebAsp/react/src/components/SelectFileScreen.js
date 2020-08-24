@@ -7,10 +7,18 @@ class SelectFileScreen extends React.Component {
     constructor(props) {
         super(props);
         this.fileChange = this.fileChange.bind(this);
+        this.labelRef = React.createRef();
     }
 
     fileChange(e) {
         this.context.requestDxf(e.target.files[0]);
+    }
+
+    componentDidMount() {
+        if (this.context.wasNewFileTriggered) {
+            this.labelRef.current.click();
+            this.setState({ wasNewFileTriggered: false });
+        }
     }
 
     render() {
@@ -19,7 +27,7 @@ class SelectFileScreen extends React.Component {
                 <input type="file" name="file" id="file" 
                     accept=".dxf" className="input-file" 
                     onChange={this.fileChange}/>
-                <label className="select-button" htmlFor="file">Выберите файл</label>
+                <label ref={this.labelRef} className="select-button" htmlFor="file">Выберите файл</label>
             </form>
         );
     }
