@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppContext } from '../AppContext';
 import '../styles/SelectFileScreen.css';
 
 class SelectFileScreen extends React.Component {
@@ -9,7 +10,7 @@ class SelectFileScreen extends React.Component {
     }
 
     fileChange(e) {
-        this.props.onFileUpload(e.target.files[0])
+        this.context.requestDxf(e.target.files[0]);
     }
 
     render() {
@@ -23,6 +24,8 @@ class SelectFileScreen extends React.Component {
         );
     }
 }
+
+SelectFileScreen.contextType = AppContext;
 
 
 export default SelectFileScreen;

@@ -1,5 +1,7 @@
 import React from 'react';
-import GridHelper from '../models/GridHelper'
+import { AppContextProvider } from '../AppContextProvider';
+import { AppContext } from '../AppContext';
+import GridHelper from '../models/GridHelper';
 import '../styles/Canvas.css';
 
 class Canvas extends React.Component {
@@ -58,7 +60,7 @@ class Canvas extends React.Component {
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 1.5;
 
-        this.props.dxf.entities.forEach(el => {
+        this.context.dxf.entities.forEach(el => {
             ctx.beginPath();
             switch (el[0]) {
                 case "line":
@@ -121,7 +123,7 @@ class Canvas extends React.Component {
     }
 
     openNewFileClick() {
-        this.props.triggerNewFile();
+        this.context.triggerNewFile();
         setTimeout(() => {
             this.newFileRef.current.click();
         }, 0);
@@ -138,7 +140,7 @@ class Canvas extends React.Component {
                 </canvas>
                 <div className="controls" id="controls">
                     <div className="control cost">
-                        Стоимость плоттинга: <span id="cost">{ this.props.cost }</span> у.е.
+                        Стоимость плоттинга: <span id="cost">{ this.context.cost }</span> у.е.
                     </div>
                     <label htmlFor="file" className="control btn" onClick={this.openNewFileClick} ref={this.newFileRef}>
                         <i className="far fa-folder-open"></i>
@@ -151,7 +153,7 @@ class Canvas extends React.Component {
     }
 }
 
-
+Canvas.contextType = AppContext;
 
 
 export default Canvas;
