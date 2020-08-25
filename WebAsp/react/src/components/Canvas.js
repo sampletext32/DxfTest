@@ -39,6 +39,7 @@ class Canvas extends React.Component {
         const canvasCurr = this.canvasRef.current;
         this.ctx = canvasCurr.getContext('2d');
         this.resizeCanvas();
+
         // TODO: remove this bullshit
         this.offset.x = canvasCurr.width / 3;
         this.offset.y = canvasCurr.height / 3;

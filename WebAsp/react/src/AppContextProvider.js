@@ -10,8 +10,9 @@ export class AppContextProvider extends Component {
 
     triggerNewFile () {
         this.setState({
-            wasNewFileTriggered: true,
             isLoaded: false,
+            isParsingError: false,
+            wasNewFileTriggered: true,
             dxf: { cost: 0, entities: [] }
         })
     }
@@ -24,15 +25,23 @@ export class AppContextProvider extends Component {
             .then(response => response.json())
             .then(
                 (result) => {
-                    result.entities = this.invertYAxis(result.entities);
-                    this.setState({
-                        dxf: {
-                            cost: result.cost,
-                            entities: result.entities
-                        },
-                        isLoaded: true
-                    });
-                    console.log('parsed json', result);
+                    if (result.hasOwnProperty('error') && result.error == 1) {
+                        this.setState({ isParsingError: true });
+                        // TODO: make cool error notification
+                        alert('Не удалось обработать файл');
+                        console.log('parsing error', result);
+                    } else {
+                        result.entities = this.invertYAxis(result.entities);
+                        this.setState({
+                            dxf: {
+                                cost: result.cost,
+                                entities: result.entities
+                            },
+                            isParsingError: false,
+                            isLoaded: true
+                        });
+                        console.log('parsed json', result);
+                    }
                 },
                 (err) => {
                     console.log('Parsing failed', err)
@@ -77,6 +86,7 @@ export class AppContextProvider extends Component {
                 value={{ 
                     dxf: this.state.dxf, 
                     isLoaded: this.state.isLoaded,
+                    isParsingError: this.state.isParsingError,
                     wasNewFileTriggered: this.state.wasNewFileTriggered,
                     triggerNewFile: this.triggerNewFile.bind(this),
                     requestDxf: this.requestDxf.bind(this)
