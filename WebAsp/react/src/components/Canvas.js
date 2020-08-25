@@ -13,6 +13,7 @@ class Canvas extends React.Component {
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseWheel = this.handleMouseWheel.bind(this);
         this.zoom = this.zoom.bind(this);
+        this.resizeCanvas = this.resizeCanvas.bind(this);
         this.canvasRef = React.createRef();
 
         // CANVAS-RELATED VARIABLES
@@ -24,18 +25,25 @@ class Canvas extends React.Component {
 
     componentDidMount() {
         this.init();
+        window.addEventListener("resize", this.onWindowResize);
+    }
+
+    onWindowResize = () => {
+        if (this.canvasRef.current) {
+            this.resizeCanvas();
+            this.drawFrame();
+        }
     }
 
     init() {
         const canvasCurr = this.canvasRef.current;
         this.ctx = canvasCurr.getContext('2d');
-        this.resizeCanvas(canvasCurr);
-
+        this.resizeCanvas();
         // TODO: remove this bullshit
         this.offset.x = canvasCurr.width / 3;
         this.offset.y = canvasCurr.height / 3;
         this.gridHelper = new GridHelper(this.ctx, this.offset, this.scale);
-        this.drawFrame(canvasCurr);
+        this.drawFrame();
     }
 
     resizeCanvas() {
@@ -135,7 +143,7 @@ class Canvas extends React.Component {
     }
 }
 
-Canvas.contextType = AppContext;
 
+Canvas.contextType = AppContext;
 
 export default Canvas;
