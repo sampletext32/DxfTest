@@ -1,9 +1,5 @@
-name: .NET Core
-'on':
-  push:
-    branches:
-      - master
-      
+name: .NET Core Action
+on:  push      
 jobs:
   build:
     name: Build
@@ -17,7 +13,7 @@ jobs:
         run: dotnet build DxfLib/DxfLib.csproj -c Release
       - name: dotnet Build WebAsp
         run: dotnet build WebAsp/WebAsp.csproj -c Release
-      - name: Publish
+      - name: dotnet Publish
         run: dotnet publish WebAsp/WebAsp.csproj -c Release --framework netcoreapp3.1 --runtime win-x64
         # make an artifact
       - name: Upload Artifact
@@ -25,6 +21,12 @@ jobs:
         with:
           name: build
           path: /home/runner/work/DxfTest/DxfTest/WebAsp/bin/Release/netcoreapp3.1/win-x64/publish/
+  upload:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    steps:
       - uses: actions/checkout@master
       - name: Download Artifact
         uses: actions/download-artifact@master
@@ -34,8 +36,8 @@ jobs:
       - name: FTP Deploy To REG.RU
         uses: SamKirkland/FTP-Deploy-Action@3.1.1
         with:
-            ftp-server: ftp://u1123042.plsk.regruhosting.ru/httpdocs/
-            ftp-username: u1123042
+            ftp-server: ${{ secrets.FTP_SERVER }}
+            ftp-username: ${{ secrets.FTP_USERNAME }}
             ftp-password: ${{ secrets.FTP_PASSWORD }}
             local-dir: 'build/' # sync only build folder
             git-ftp-args: --all # upload all files
