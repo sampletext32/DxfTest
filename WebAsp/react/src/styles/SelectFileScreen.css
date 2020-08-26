@@ -1,0 +1,58 @@
+
+.select-file {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-button {
+    padding: 20px;
+    background: #4089ff;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14pt;
+    transition: 0.4s;
+    position: relative;
+}
+
+.select-button:hover {
+    background: #286ad4;
+}
+
+.select-btn-spinner {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4089ff;
+    border-radius: 6px;
+    font-size: 27px;
+}
+
+.spin-icon {
+    animation: spin 2s linear infinite;
+}
+
+.input-file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
