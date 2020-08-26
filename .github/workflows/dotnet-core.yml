@@ -18,19 +18,19 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.x
-      - name: dotnet Build DxfLib
-        run: dotnet build DxfLib/DxfLib.csproj -c Release
-      - name: dotnet Build WebAsp
-        run: dotnet build WebAsp/WebAsp.csproj -c Release
+      #- name: dotnet Build DxfLib
+      #  run: dotnet build DxfLib/DxfLib.csproj -c Release
+      #- name: dotnet Build WebAsp
+      #  run: dotnet build WebAsp/WebAsp.csproj -c ActionsRelease
       - name: dotnet Publish
-        run: dotnet publish WebAsp/WebAsp.csproj -c Release --framework netcoreapp3.1 --runtime win-x64
+        run: dotnet publish WebAsp/WebAsp.csproj -c ActionsRelease --framework netcoreapp3.1 --runtime win-x64
         # make an artifact
-      - run: mv WebAsp/react/build/ WebAsp/bin/Release/netcoreapp3.1/win-x64/publish/wwwroot/ -v
+      - run: mv WebAsp/react/build/ WebAsp/bin/ActionsRelease/netcoreapp3.1/win-x64/publish/wwwroot/ -v
       - name: Upload Artifact
         uses: actions/upload-artifact@master
         with:
           name: build
-          path: /home/runner/work/DxfTest/DxfTest/WebAsp/bin/Release/netcoreapp3.1/win-x64/publish/
+          path: /home/runner/work/DxfTest/DxfTest/WebAsp/bin/ActionsRelease/netcoreapp3.1/win-x64/publish/
   upload:
     name: FTP Deploy
     runs-on: ubuntu-latest

@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <Configurations>Debug;Release;ActionsRelease</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +16,8 @@
     <ProjectReference Include="..\DxfLib\DxfLib.csproj" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="if '$(Configuration)' == 'Debug' (start &quot;&quot; &quot;C:\Program Files\Git\bin\sh.exe&quot; --login -c &quot;cd react &amp;&amp; ./build.bash &amp;&amp; exit&quot;)" />
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(ConfigurationName)' != 'ActionsRelease'">
+    <Exec Command="start &quot;&quot; &quot;C:\Program Files\Git\bin\sh.exe&quot; --login -c &quot;cd react &amp;&amp; ./build.bash &amp;&amp; exit&quot;" />
   </Target>
 
 
