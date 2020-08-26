@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using DxfLib;
 using IxMilia.Dxf;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +32,14 @@ namespace WebAsp.Controllers.API
                         var fileJson = new DxfToJsonConverter().EncodeFileJson(dxfFile);
                         return fileJson;
                     }
-                    catch
+                    catch (Exception e)
                     {
-                        return "ERROR PARSING DXF FILE";
+                        return $"{{\"error\":\"{e.Message}\"}}";
                     }
                 }
             }
 
-            return "NO FILE UPLOADED";
+            return "{\"error\":\"No File Uploaded\"}";
         }
     }
 }

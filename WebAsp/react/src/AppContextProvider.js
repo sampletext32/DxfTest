@@ -25,10 +25,13 @@ export class AppContextProvider extends Component {
             .then(response => response.json())
             .then(
                 (result) => {
-                    if (result.hasOwnProperty('error') && result.error === 1) {
-                        this.setState({ isParsingError: true });
+                    if (result.hasOwnProperty('error')) {
                         // TODO: make cool error notification
-                        alert('Не удалось обработать файл');
+                        alert(result.error);
+                        this.setState({
+                            isParsingError: true,
+                            isLoaded: false
+                        });
                         console.log('parsing error', result);
                     } else {
                         result.entities = this.invertYAxis(result.entities);
