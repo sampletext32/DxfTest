@@ -80,6 +80,7 @@ class Canvas extends React.Component {
                 case "arc":
                     ctx.arc(scale * el[1] + offset.x, scale * el[2] + offset.y, scale * el[3], el[4], el[5]);
                     break;
+                case "lwpolyline":
                 case "spline":
                     ctx.moveTo(scale * el[1][0] + offset.x, scale * el[1][1] + offset.y);
                     for (let j = 1; j < el.length - 1; j++) {

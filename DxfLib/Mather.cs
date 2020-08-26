@@ -31,6 +31,8 @@ namespace DxfLib
                 return GetEntityLength(dxfCircle);
             }
 
+            if (dxfEntity is DxfLwPolyline dxfLwPolyline) return GetEntityLength(dxfLwPolyline);
+
             if (dxfEntity is DxfInsert dxfInsert) return GetEntityLength(dxfInsert);
 
             throw new ArgumentException($"Unknown DxfEntity {dxfEntity}");
@@ -46,9 +48,36 @@ namespace DxfLib
             return Distance(p1.Location, p2.Location);
         }
 
+        private float Distance(DxfLwPolylineVertex p1, DxfLwPolylineVertex p2)
+        {
+            return (float)Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
+        }
+
         public float GetEntityLength(DxfPolyline dxfPolyline)
         {
             var dxfPolylineVertices = dxfPolyline.Vertices;
+
+            var sumDistance = 0f;
+
+            using (var enumerator = dxfPolylineVertices.GetEnumerator())
+            {
+                if (!enumerator.MoveNext()) return sumDistance;
+
+                var last = enumerator.Current;
+                while (enumerator.MoveNext())
+                {
+                    var current = enumerator.Current;
+                    sumDistance += Distance(current, last);
+                    last = current;
+                }
+            }
+
+            return sumDistance;
+        }
+
+        public float GetEntityLength(DxfLwPolyline dxfLwPolyline)
+        {
+            var dxfPolylineVertices = dxfLwPolyline.Vertices;
 
             var sumDistance = 0f;
 
