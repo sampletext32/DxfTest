@@ -68,6 +68,7 @@ export class AppContextProvider extends Component {
                 el[5] = 2 * Math.PI - this.degToRad(el[5]);
                 [el[4], el[5]] = [el[5], el[4]];
                 break;
+            case "lwpolyline":
             case "spline":
                 for (let i = 1; i < el.length; i++)
                     el[i][1] *= -1;

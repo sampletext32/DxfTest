@@ -34,6 +34,8 @@ namespace DxfLib
                 return EntityToJson(dxfCircle);
             }
 
+            if (dxfEntity is DxfLwPolyline dxfLwPolyline) return EntityToJson(dxfLwPolyline);
+
             if (dxfEntity is DxfInsert dxfInsert) return EntityToJson(dxfInsert);
 
             throw new ArgumentException($"Unknown DxfEntity {dxfEntity}");
@@ -71,6 +73,20 @@ namespace DxfLib
             }
 
             return json;
+        }
+
+        public string EntityToJson(DxfLwPolyline dxfLwPolyline)
+        {
+            // TODO!
+            var dxfLwPolylineVertices = dxfLwPolyline.Vertices;
+
+            var json = string.Join(", ",
+                dxfLwPolylineVertices.Select(cp =>
+                    string.Format(Format, "[{0:F},{1:F}]",
+                        cp.X,
+                        cp.Y)));
+
+            return string.Format("[\"lwpolyline\",{0}]", json);
         }
 
         public string EntityToJson(DxfLine dxfLine)
