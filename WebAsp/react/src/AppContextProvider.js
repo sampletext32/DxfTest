@@ -21,7 +21,7 @@ export class AppContextProvider extends Component {
         var formData = new FormData();
         formData.append("file", file);
 
-        fetch("https://u1123042.plsk.regruhosting.ru/api/dxf", { method: "POST", body: formData })
+        fetch("api/dxf", {method: "POST", body: formData })
             .then(response => response.json())
             .then(
                 (result) => {
