@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="react\**" />
+    <Content Remove="react\**" />
+    <EmbeddedResource Remove="react\**" />
+    <None Remove="react\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\HTML\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
