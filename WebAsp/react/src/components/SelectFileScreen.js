@@ -14,8 +14,6 @@ class SelectFileScreen extends React.Component {
     }
 
     fileChange(e) {
-        this.context.notificationService.add("Hello motherfuckers!");
-
         this.setState({ isLoading: true });
         this.context.requestDxf(e.target.files[0]);
     }

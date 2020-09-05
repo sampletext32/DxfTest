@@ -14,7 +14,7 @@ class App extends React.Component {
             <AppContext.Consumer>{(context) =>
                 <ErrorBoundary>
 
-                    <NotificationService></NotificationService>
+                    <NotificationService/>
 
                     {(!context.isLoaded ?
                         <SelectFileScreen /> :

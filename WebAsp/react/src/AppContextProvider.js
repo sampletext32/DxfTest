@@ -51,7 +51,6 @@ export class AppContextProvider extends Component {
     };
 
     registerNotificationService (service) {
-        console.log("Service = ", service);
         this.setState({ notificationService : service });
     }
 
