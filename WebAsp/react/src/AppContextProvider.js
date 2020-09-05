@@ -5,7 +5,8 @@ export class AppContextProvider extends Component {
     state = {
         dxf: { cost: 0, entities: [] },
         isLoaded: false,
-        wasNewFileTriggered: false
+        wasNewFileTriggered: false,
+        notificationService: null
     }
 
     triggerNewFile () {
@@ -49,6 +50,11 @@ export class AppContextProvider extends Component {
             );
     };
 
+    registerNotificationService (service) {
+        console.log("Service = ", service);
+        this.setState({ notificationService : service });
+    }
+
     invertYAxis (data) {
         data.forEach(el => {
             switch (el[0]) {
@@ -85,9 +91,12 @@ export class AppContextProvider extends Component {
             <AppContext.Provider
                 value={{ 
                     dxf: this.state.dxf, 
+                    notificationService: this.state.notificationService,
                     isLoaded: this.state.isLoaded,
                     isParsingError: this.state.isParsingError,
                     wasNewFileTriggered: this.state.wasNewFileTriggered,
+
+                    registerNotificationService: this.registerNotificationService.bind(this),
                     triggerNewFile: this.triggerNewFile.bind(this),
                     requestDxf: this.requestDxf.bind(this)
                 }}
