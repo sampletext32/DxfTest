@@ -1,0 +1,7 @@
+{
+    "translations": {
+        "selectFile": "Select a file",
+        "cuttingCost": "Cutting will cost ${{cost}}",
+        "aboutDemo": "This demo project is dxf viewer. It will show you how much it would cost to cut a part (from cardboard, plywood, etc.)"
+    }
+}

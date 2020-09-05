@@ -3,8 +3,16 @@
     height: 100vh;
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.select-file .about {
+    display: block;
+    max-width: 500px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .select-button {

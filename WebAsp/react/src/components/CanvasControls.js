@@ -1,15 +1,18 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../AppContext';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faFolderOpen } from '@fortawesome/free-solid-svg-icons'
 
 function CanvasControls(props) {
-    let context = useContext(AppContext);
+    const {t} = useTranslation();
+    const context = useContext(AppContext);
+
     return (
         <div className="controls" id="controls">
             <div className="control cost">
-                Стоимость плоттинга: <span id="cost">{context.dxf.cost}</span> у.е.
-                </div>
+                {t('cuttingCost', {cost: context.dxf.cost})}
+            </div>
             <label htmlFor="file" className="control btn" onClick={context.triggerNewFile}>
                 <FontAwesomeIcon icon={faFolderOpen} />
             </label>

@@ -1,0 +1,7 @@
+{
+    "translations": {
+        "selectFile": "Выберите файл",
+        "cuttingCost": "Стоимость плоттинга: {{cost}} у.е.",
+        "aboutDemo": ""
+    }
+}
