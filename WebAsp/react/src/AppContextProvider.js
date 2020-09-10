@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import AppContext from './AppContext';
 
 export class AppContextProvider extends Component {
+
     state = {
         dxf: { cost: 0, entities: [] },
         isLoaded: false,
         wasNewFileTriggered: false,
-        notificationService: null
+        notificationService: null,
+
+        // functions
+        registerNotificationService: this.registerNotificationService,
+        triggerNewFile: this.triggerNewFile,
+        requestDxf: this.requestDxf
     }
 
-    triggerNewFile () {
+    triggerNewFile = () => {
         this.setState({
             isLoaded: false,
             isParsingError: false,
@@ -18,7 +24,7 @@ export class AppContextProvider extends Component {
         })
     }
 
-    requestDxf (file) {
+    requestDxf = (file) => {
         var formData = new FormData();
         formData.append("file", file);
 
@@ -50,7 +56,7 @@ export class AppContextProvider extends Component {
             );
     };
 
-    registerNotificationService (service) {
+    registerNotificationService = (service) => {
         this.setState({ notificationService : service });
     }
 
@@ -95,9 +101,9 @@ export class AppContextProvider extends Component {
                     isParsingError: this.state.isParsingError,
                     wasNewFileTriggered: this.state.wasNewFileTriggered,
 
-                    registerNotificationService: this.registerNotificationService.bind(this),
-                    triggerNewFile: this.triggerNewFile.bind(this),
-                    requestDxf: this.requestDxf.bind(this)
+                    registerNotificationService: this.registerNotificationService,
+                    triggerNewFile: this.triggerNewFile,
+                    requestDxf: this.requestDxf
                 }}
             >
                 {this.props.children}

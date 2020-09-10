@@ -1,7 +1,7 @@
 import React from 'react';
-import { AppContext } from '../AppContext';
+import { AppContext } from '../../AppContext';
 import CanvasControls from './CanvasControls';
-import GridHelper from '../models/GridHelper';
+import GridHelper from '../../models/GridHelper';
 import '../styles/Canvas.css';
 
 class Canvas extends React.Component {
