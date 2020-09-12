@@ -1,0 +1,12 @@
+
+
+.choose-file .input-file {
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.order-list .list-group-item .delete-item {
+    float: right;
+}
+

@@ -7,8 +7,6 @@ class ChooseFile extends React.Component {
     constructor(props) {
         super(props);
 
-        this.variant = props.variant === 'sm' ? 'sm' : 'lg';
-
         this.dxfInputRef = React.createRef();
         this.imgInputRef = React.createRef();
         this.typeRequested = "";
@@ -30,27 +28,26 @@ class ChooseFile extends React.Component {
 
 
     render() {
+        var size = this.props.variant === 'sm' ? 'sm' : 'lg';
         return (
             <div className="row">
                 <form className="col-12 text-center choose-file mt-5">
-                    <Button variant="primary" size={this.variant} onClick={this.dxfBtnClick}>
+                    <Button variant="primary" size={size} onClick={this.dxfBtnClick}>
                         Загрузить .dxf файл
                     </Button>
-                    <Button variant="secondary" size={this.variant} onClick={this.imgBtnClick} className="ml-3">
+                    <Button variant="secondary" size={size} onClick={this.imgBtnClick} className="ml-3">
                         Загрузить изображение
                     </Button>
 
-                    <input type="file" name="dxf-file"
+                    <input type="file" name="dxf-file" multiple
                         accept=".dxf" className="input-file"
-                        style={{ opacity: 0, height: 0, width: 0 }}
                         ref={this.dxfInputRef}
                         onChange={this.fileChange} />
 
-                    <input type="file" name="img-file"
+                    <input type="file" name="img-file" multiple
                         accept="image/*" className="input-file"
-                        style={{ opacity: 0, height: 0, width: 0 }}
                         ref={this.imgInputRef}
-                        onChange={this.fileChange.bind(this)} />
+                        onChange={this.fileChange} />
 
                 </form>
 
