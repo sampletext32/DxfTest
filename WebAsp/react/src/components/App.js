@@ -5,7 +5,7 @@ import './../styles/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import Landing from './Landing'
-import Order from './Order'
+import Order from './Order/Order'
 
 
 class App extends React.Component {
