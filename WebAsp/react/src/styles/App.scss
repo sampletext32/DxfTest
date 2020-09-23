@@ -1,0 +1,38 @@
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #1F2A32;
+    color: #F3F3F4;
+    font-size: 18px;
+    line-height: 21px;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 500;
+    color: #ffffff;
+}
+
+h1 {
+    font-size: 84px;
+    margin: 100px 0 50px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 48px;
+    text-align: center;
+}
+
+.subheader {
+    line-height: 25px;
+    text-align: center;
+}
+
+button {
+    font: 500 18px Roboto;
+    padding: 14px 36px;
+    margin: 0;
+    border: none;
+    background: #F9423A;
+    color: #ffffff;
+}

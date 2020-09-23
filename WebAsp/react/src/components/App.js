@@ -1,8 +1,8 @@
 import React from 'react'
 import Header from './Header'
 import { AppContext } from '../AppContext'
-import './../styles/App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import '../styles/App.scss'
 
 import Landing from './Landing'
 import Order from './Order/Order'

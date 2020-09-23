@@ -1,0 +1,26 @@
+
+.header {
+    background: #14181C;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+
+    .logo {
+        text-align: left;
+    }
+
+    .top-nav {
+        flex: 1;
+        margin: 0;
+        text-align: center;
+        .top-nav-item {
+            text-transform: uppercase;
+            list-style: none;
+            display: inline-block;
+            margin: 0 17px;
+            font-size: 18px;
+        }
+    }
+}
+

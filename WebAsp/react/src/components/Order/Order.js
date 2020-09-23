@@ -19,7 +19,6 @@ class Order extends React.Component {
     }
 
     onFileSelected(e, type) {
-        console.log(e.target.files);
         if (e.target.files && e.target.files.length > 0) {
             this.addOrderItems(Array.from(e.target.files), type)
         }

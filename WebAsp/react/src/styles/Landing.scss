@@ -1,0 +1,28 @@
+
+.hero {
+    background: url(/img/hero-bg-image.png) center center;
+    background-size: cover;
+    .inner {
+        padding-bottom: 100px;
+        background: rgba(20, 23, 34, 0.8);
+    }
+    .subheader {
+        margin: 56px 0;
+    }    
+    button.get-cost {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .hero-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 50px;
+        .hero-card-text {
+            margin-left: 20px;
+            font-family: 'Gotham', sans-serif;
+        }        
+    }
+    
+} 

@@ -1,23 +1,24 @@
 import React from 'react'
-import { Nav, Navbar } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { AppContext } from '../AppContext'
+import '../styles/Header.scss'
 
 class Header extends React.Component {
 
     render() {
         return (
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand as={Link} to="/">7CUT</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/order">Рассчитать</Nav.Link>
-                        <Nav.Link href="#about">О нас</Nav.Link>
-                        <Nav.Link href="#gallery">Фото</Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            <header className="header">
+                <div className="logo">Logotype</div>
+                <ul className="top-nav">
+                    <li className="top-nav-item">О компании</li>
+                    <li className="top-nav-item">Процесс работы</li>
+                    <li className="top-nav-item">Материалы</li>
+                    <li className="top-nav-item">Вопросы и ответы</li>
+                    <li className="top-nav-item">Контакты</li>
+                </ul>
+                <div className="contact-btn-container">
+                    <button className="button">Связаться</button>
+                </div>
+            </header>
         )
     }
 
