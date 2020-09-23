@@ -1,6 +1,7 @@
+@import 'variables';
 
 .header {
-    background: #14181C;
+    background: $dark;
     height: 150px;
     display: flex;
     align-items: center;

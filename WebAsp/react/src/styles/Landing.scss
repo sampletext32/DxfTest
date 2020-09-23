@@ -1,3 +1,4 @@
+@import 'variables';
 
 .hero {
     background: url(/img/hero-bg-image.png) center center;
@@ -23,6 +24,47 @@
             margin-left: 20px;
             font-family: 'Gotham', sans-serif;
         }        
-    }
-    
+    }    
 } 
+
+.process {
+    background: $dark;
+    .slider {
+        padding: 77px 0 110px;
+        img {
+            max-width: 100%;
+        }
+        .slick-slide .inner {
+            padding: 0 10px;
+        }
+          
+    }
+    .proc-card {
+        text-align: center;
+        font-family: 'Gotham';
+        margin-bottom: 50px;
+        img {
+            width: 100px;
+        }
+        .proc-subheader {
+            padding-top: 36px;
+        }
+        h4 {
+            font-size: 18px;
+        }
+    }
+}
+
+.materials {
+    .material-card {
+        text-align: center;
+        p { margin: 0; }
+        margin-bottom: 40px;
+        .inner {
+            padding: 50px 40px;
+            height: 100%;
+            border: 1px solid #909294;
+        }
+    }
+}
+
